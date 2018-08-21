@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "outDir": "lib",
+        "jsx": "react",
+        "baseUrl": "./",
+        "allowJs": true,
+        "strictNullChecks": false,
+        "noImplicitThis": false,
+        "declaration": false,
+        "paths": {
+            "*": ["node_modules/@types/*", "*"]
+        },
+        "module": "commonjs",
+        "target": "es5",
+        "lib": ["es2017", "dom"],
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "noImplicitReturns": true,
+        "pretty": true,
+        "typeRoots": ["node_modules/@types"],
+        "strict": true
+    },
+    "include": ["./src/**/*", "./node_modules/web3-typescript-typings/index.d.ts"]
+}

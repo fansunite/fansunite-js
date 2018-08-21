@@ -1,20 +1,7 @@
-import { ContractWrapper } from "./contract-wrapper";
+import { ContractWrapper } from './contract-wrapper';
 
 export class League001 extends ContractWrapper {
-
-  constructor(web3: any) {
-    super(web3);
+  constructor(web3: any, networkId: number) {
+    super(web3, networkId);
   }
-
-  //getSeasons
-
-  //getSeason
-
-  //getFixture
-
-  //getParticipant
-
-  //getName
-
-  //getClass
 }

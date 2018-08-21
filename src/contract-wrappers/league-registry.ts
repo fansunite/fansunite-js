@@ -1,22 +1,21 @@
+import { artifacts } from '../artifacts';
 import { ContractWrapper } from './contract-wrapper';
-import { artifacts } from 'src/artifacts';
 
 export class LeagueRegistry extends ContractWrapper {
-
-  constructor(web3: any) {
-    super(web3);
+  constructor(web3: any, networkId: number) {
+    super(web3, networkId);
   }
 
-  public async getClass(className: string): Promise<[string, string[]]> {
+  public async getLeaguesByClass(className: string): Promise<string[]> {
     const instance = this._getLeagueRegistryInstance();
-    return await instance.methods.getClass(className);
+    const result = await instance.methods.getClass(className).call();
+    return result[1];
   }
 
   private _getLeagueRegistryInstance() {
-    return new this._web3.eth.Contract(
+    return new this.web3.eth.Contract(
       artifacts.LeagueRegistry.abi,
-      artifacts.LeagueRegistry.networks[this._web3.eth.net.getId()].address
+      artifacts.LeagueRegistry.networks[this.networkId].address
     );
   }
-
 }

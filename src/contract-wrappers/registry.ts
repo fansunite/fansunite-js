@@ -1,7 +1,7 @@
-export class Registry {
-  private _web3: any;
+import { ContractWrapper } from './contract-wrapper';
 
-  constructor(web3: any){
-    this._web3 = web3;
+export class Registry extends ContractWrapper {
+  constructor(web3: any, networkId: number) {
+    super(web3, networkId);
   }
 }

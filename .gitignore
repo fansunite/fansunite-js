@@ -18,6 +18,6 @@ node_modules/
 .env
 
 # Project Specific
-build/
+lib/
 TODO.md
 .swp

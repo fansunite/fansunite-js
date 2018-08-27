@@ -2,7 +2,7 @@
   "name": "fansunite-js",
   "version": "0.0.1",
   "description": "JavaScript library for interacting with FansUnite Smart Contracts",
-  "main": "lib/src/index.js",
+  "main": "./lib/src/index.js",
   "author": "Fansunite Entertainment Inc",
   "license": "MIT",
   "private": true,
@@ -18,7 +18,8 @@
     "run_mocha": "mocha lib/test/*.js",
     "prettier": "prettier --write 'src/**/*.ts' 'test/**/*.ts'",
     "postinstall": "rm -f node_modules/web3/index.d.ts",
-    "rebuild_artifacts": "scripts/build_artifacts.sh"
+    "rebuild_artifacts": "scripts/build_artifacts.sh",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",

@@ -1,9 +1,9 @@
 import { BigNumber } from 'bignumber.js';
 export interface Participant {
-    id: BigNumber;
+  id: BigNumber;
 }
 export interface Fixture {
-    id: BigNumber;
-    participants: BigNumber[];
-    start: BigNumber;
+  id: BigNumber;
+  participants: BigNumber[];
+  start: BigNumber;
 }

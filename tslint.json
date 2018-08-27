@@ -2,7 +2,8 @@
     "extends": ["tslint:latest", "tslint-config-prettier"],
     "rules": {
         "no-implicit-dependencies": [true, "dev"],
-        "quotemark": [true, "single", "jsx-double"]
-    },
-    "rulesDirectory": "lib"
+        "quotemark": [true, "single", "jsx-double"],
+        "interface-name": [true, "never-prefix"],
+        "object-literal-sort-keys": [true, "match-declaration-order", "shorthand-first"]
+    }
 }

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "JavaScript library for interacting with FansUnite Smart Contracts",
   "main": "./lib/src/index.js",
+  "typings": "./lib/src/index.d.ts",
   "author": "Fansunite Entertainment Inc",
   "license": "MIT",
   "private": true,

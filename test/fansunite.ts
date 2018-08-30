@@ -141,6 +141,13 @@ describe('FansUnite library', () => {
     });
   });
 
+  describe('Registry', () => {
+    it('should get the address for Vault', async() => {
+      const result = await fansunite.registry.getAddress('Vault');
+      // TODO
+    });
+  });
+
   describe('hashBet', () => {
     it('should hash the bet parameters', async () => {
       const betHash = fansunite.hashBet(bet);
@@ -164,4 +171,6 @@ describe('FansUnite library', () => {
       // TODO
     });
   });
+
+
 });

@@ -38,6 +38,11 @@ export class LeagueRegistry extends ContractWrapper {
     return instance.methods.isLeagueRegistered(leagueAddress).call();
   }
 
+  public async isClassSupported(className: string) {
+    const instance = this._getLeagueRegistryInstance();
+    return instance.methods.isClassSupported(className).call();
+  }
+
   private _getLeagueRegistryInstance() {
     return new this.web3.eth.Contract(
       artifacts.LeagueRegistry.abi,

@@ -13,7 +13,19 @@ export class Vault extends ContractWrapper {
 
   public async deposit(token: string, amount: number, from: string) {
     const instance = this._getVaultInstance();
-    return instance.methods.deposit(token, amount).send({ from, value: amount });
+
+    return new Promise(async (resolve, reject) => {
+      try{
+        return instance.methods.deposit(token, amount)
+          .send({ from, value: amount })
+          .on('receipt', (receipt: any) => {
+            return resolve(receipt.transactionHash);
+          })
+          .catch((err: any) => reject(err));
+      } catch (err) {
+        return reject(err);
+      }
+    });
   }
 
   public async withdraw(token: string, amount: number, from: string) {

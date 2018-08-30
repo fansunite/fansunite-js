@@ -19,6 +19,7 @@ export class Vault extends ContractWrapper {
         return instance.methods.deposit(token, amount)
           .send({ from, value: amount })
           .on('receipt', (receipt: any) => {
+            console.log(receipt);
             return resolve(receipt.transactionHash);
           })
           .catch((err: any) => reject(err));

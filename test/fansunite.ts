@@ -107,7 +107,7 @@ describe('FansUnite library', () => {
 
   describe('LeagueRegistry', () => {
     it('should get a list of league addresses by class name', async () => {
-      const result = await fansunite.leagueRegistry.getLeaguesByClass('soccer');
+      const result = await fansunite.leagueRegistry.getLeaguesByClass(className);
       // TODO
     });
     it('should return a league by an address', async () => {
@@ -115,11 +115,15 @@ describe('FansUnite library', () => {
       // TODO
     });
     it('should return a lst of populated leagues', async () => {
-      const result = await fansunite.leagueRegistry.getClassWithLeagues('soccer');
+      const result = await fansunite.leagueRegistry.getClassWithLeagues(className);
       // TODO
     });
     it('should return true if league is registered', async () => {
       const result = await fansunite.leagueRegistry.isLeagueRegistered(leagueAddress);
+      // TODO
+    });
+    it('should return true if class is supported', async () => {
+      const result = await fansunite.leagueRegistry.isClassSupported(className);
       // TODO
     });
   });
@@ -141,12 +145,12 @@ describe('FansUnite library', () => {
       const result = await fansunite.league001.getSeasons(leagueAddress);
       // TODO
     });
-    it('should return the list of seasons for the league', async () => {
+    it('should return the list of fixtures for the season for the league', async () => {
       const result = await fansunite.league001.getSeason(leagueAddress, season);
       // TODO
     });
     it('should return the list of participants for the league', async () => {
-      // TODO: to implement in smart contract
+      // TODO: to implement in smart contract as an extension
       // const result = await fansunite.league001.getParticipants(leagueAddress);
       // console.log(result);
     });
@@ -198,8 +202,8 @@ describe('FansUnite library', () => {
   });
 
   describe('Registry', () => {
-    it('should get the address for Vault', async() => {
-      const result = await fansunite.registry.getAddress('Vault');
+    it('should get the correct address using the `nameKey` BetManager ', async() => {
+      const result = await fansunite.registry.getAddress('BetManager');
       // TODO
     });
   });
@@ -215,15 +219,23 @@ describe('FansUnite library', () => {
     it('should sign the bet', async () => {
       const signedBet = await fansunite.newSignedBet(bet, layerTokenFillAmount);
       const betHash = await fansunite.hashBet(bet);
-      const fillBet = await fansunite.betManager.fillBet(signedBet, layerTokenFillAmount, layerAddress);
-      const filled = await fansunite.betManager.filled(betHash);
       // TODO
     });
   });
 
-  describe('generateSalt', () => {
+  describe('BetManager', () => {
+    it('should fill a bet', async() => {
+      const signedBet = await fansunite.newSignedBet(bet, layerTokenFillAmount);
+      const betHash = await fansunite.hashBet(bet);
+      const fillBet = await fansunite.betManager.fillBet(signedBet, layerTokenFillAmount, layerAddress);
+      const filled = await fansunite.betManager.filled(betHash);
+    });
+  });
+
+  describe('generateNonce', () => {
+    // TODO change to generate nonce
     it('should generate random number', async () => {
-      const salt = fansunite.generateSalt();
+      const nonce = fansunite.generateNonce();
       // TODO
     });
   });

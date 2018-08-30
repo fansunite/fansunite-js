@@ -6,7 +6,7 @@ import { Vault } from './contract-wrappers/vault';
 
 import { Bet, NewSignedBet } from './types';
 
-import { generateSalt, newSignedBet } from './utils/bet-utils';
+import { generateNonce, newSignedBet } from './utils/bet-utils';
 import { hashBet } from './utils/hash-utils';
 import { signBet } from './utils/signature-utils';
 import { awaitTxMined } from './utils/tx-utils';
@@ -39,13 +39,13 @@ export class FansUnite {
   }
 
   public async newSignedBet(bet: Bet, layerTokenAmount: number) {
-    bet.salt = this.generateSalt();
+    bet.salt = this.generateNonce();
     const signature = await this.signBet(bet);
     return newSignedBet(bet, layerTokenAmount, bet.betPayload, signature);
   }
 
-  public generateSalt() {
-    return generateSalt();
+  public generateNonce() {
+    return generateNonce();
   }
 
   public async awaitTxMined(txHash: string) {

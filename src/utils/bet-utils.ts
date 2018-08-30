@@ -30,7 +30,7 @@ export async function newSignedBet(bet: Bet, layerTokenAmount: number, betPayloa
   return newBet;
 }
 
-export function generateSalt() {
+export function generateNonce() {
   const randomNumber = BigNumber.random(9);
   const factor = new BigNumber(10).pow(9 - 1);
   const salt = randomNumber

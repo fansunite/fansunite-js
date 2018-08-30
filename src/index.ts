@@ -9,6 +9,7 @@ import { Bet, NewSignedBet } from './types';
 import { generateSalt, newSignedBet } from './utils/bet-utils';
 import { hashBet } from './utils/hash-utils';
 import { signBet } from './utils/signature-utils';
+import { awaitTxMined } from './utils/tx-utils';
 
 export class FansUnite {
   public betManager: BetManager;
@@ -45,5 +46,9 @@ export class FansUnite {
 
   public generateSalt() {
     return generateSalt();
+  }
+
+  public async awaitTxMined(txHash: string) {
+    return awaitTxMined(this.web3, txHash, 1000);
   }
 }

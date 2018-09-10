@@ -162,15 +162,23 @@ describe('FansUnite library', () => {
       const result = await fansunite.league001.isResolverRegistered(leagueAddress, resolverAddress);
       expect(result).to.be.equal(true);
     });
-    it('should return `false` if resolver is registered', async () => {
+    it('should return `false` if resolver is not registered', async () => {
       const result = await fansunite.league001.isResolverRegistered(leagueAddress, constants.NULL_ADDRESS);
+      expect(result).to.be.equal(false);
+    });
+    it('should return `true` if a participant exists', async () => {
+      const result = await fansunite.league001.isParticipant(leagueAddress, 1);
+      expect(result).to.be.equal(true);
+    });
+    it('should return `false` if a participant does not exists', async () => {
+      const result = await fansunite.league001.isParticipant(leagueAddress, 100);
       expect(result).to.be.equal(false);
     });
     it('should return `true` if fixture is scheduled', async () => {
       const result = await fansunite.league001.isFixtureScheduled(leagueAddress, fixtureId);
       expect(result).to.be.equal(true);
     });
-    it('should return `false` if fixture is scheduled', async () => {
+    it('should return `false` if fixture is not scheduled', async () => {
       const result = await fansunite.league001.isFixtureScheduled(leagueAddress, 2);
       expect(result).to.be.equal(false);
     });

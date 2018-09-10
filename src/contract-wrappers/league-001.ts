@@ -76,6 +76,11 @@ export class League001 extends ContractWrapper {
     return participant;
   }
 
+  public async isParticipant(leagueAddress: string, id: number) {
+    const instance = this._getLeagueContractInstance(leagueAddress);
+    return instance.methods.isParticipant(id).call();
+  }
+
   public async isResolverRegistered(leagueAddress: string, resolverAddress: string) {
     const instance = this._getLeagueContractInstance(leagueAddress);
     return instance.methods.isResolverRegistered(resolverAddress).call();

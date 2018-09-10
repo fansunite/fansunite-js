@@ -117,6 +117,10 @@ describe('FansUnite library', () => {
       const result = await fansunite.league001.getClass(leagueAddress);
       expect(result).to.be.equal(className);
     });
+    it('should return version of the league', async () => {
+      const result = await fansunite.league001.getVersion(leagueAddress);
+      expect(result).to.be.equal('0.0.1');
+    });
     it('should return the ipfs hash name of the league', async () => {
       const result = await fansunite.league001.getDetails(leagueAddress);
       expect(result).to.be.equal(constants.NULL_HASH); // TODO fix

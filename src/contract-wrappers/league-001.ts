@@ -1,5 +1,5 @@
 import { artifacts } from '../artifacts';
-import { Fixture } from '../types';
+import { Fixture, Participant } from '../types';
 import { ContractWrapper } from './contract-wrapper';
 
 export class League001 extends ContractWrapper {
@@ -40,9 +40,9 @@ export class League001 extends ContractWrapper {
     const instance = this._getLeagueContractInstance(leagueAddress);
     const result = await instance.methods.getFixture(id).call();
     const fixture: Fixture = {
-      id: result[0],
+      id: Number(result[0]),
       participants: result[1],
-      start: result[2]
+      start: Number(result[2])
     };
     return fixture;
   }
@@ -62,7 +62,13 @@ export class League001 extends ContractWrapper {
 
   public async getParticipant(leagueAddress: string, id: number) {
     const instance = this._getLeagueContractInstance(leagueAddress);
-    return instance.methods.getParticipant(id).call();
+    const result = await instance.methods.getParticipant(id).call();
+    const participant: Participant = {
+      id:  Number(result[0]),
+      name: result[1],
+      details: result[2]
+    };
+    return participant;
   }
 
   public async isResolverRegistered(leagueAddress: string, resolverAddress: string) {

@@ -6,6 +6,8 @@ export interface League {
 
 export interface Participant {
   id: number;
+  name: string;
+  details: string;
 }
 
 export interface Fixture {

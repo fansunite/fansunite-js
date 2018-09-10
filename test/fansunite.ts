@@ -3,88 +3,58 @@ import 'mocha';
 import Web3 = require('web3');
 
 import { FansUnite } from '../src';
-import { Bet } from '../src/types';
+import { Bet, Fixture } from '../src/types';
 import { constants } from './utils/constants';
-
-import * as LeagueRegistry from '../src/artifacts/LeagueRegistry.json';
-import * as League001 from '../src/artifacts/League001.json';
-import * as Vault from '../src/artifacts/Vault.json';
-import * as BetManager from '../src/artifacts/BetManager.json';
+import { Migration } from './utils/migration'
 
 let fansunite: FansUnite;
-const TOKEN_DECIMALS = 18;
+
+const className = 'soccer';
+const leagueName = 'English Premiership';
+const participants = [
+  'Leicester City',
+  'Manchester United'
+];
+const year = 2018;
+const fixtureId = 1;
+const participantId = 1;
+const eventStartTime = 1545437384;
+const layerTokenFillAmount = 1 * 10 ** constants.TOKEN_DECIMALS;
+
 let leagueAddress: string;
+let resolverAddress: string;
 let betManagerAddress: string;
 let backerAddress: string;
+let nonApprovedAddress: string;
 let layerAddress: string;
-let resolverAddress: string;
-
-const tokenAddress = '0x0000000000000000000000000000000000000000';
-const season = 2018;
-const fixtureId = 1;
-const layerTokenFillAmount = 10 ** TOKEN_DECIMALS;
-const className = 'soccer';
-let fromAddress: string;
-
-const league = {
-  class: className,
-  name: 'English Premiership',
-  details: '0x0000'
-};
+const tokenAddress = constants.NULL_ADDRESS; // ETH Token
 
 let bet: Bet;
 
 describe('FansUnite library', () => {
   before(async () => {
+
     // @ts-ignore
     const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
     const networkId = await web3.eth.net.getId();
     const accounts = await web3.eth.getAccounts();
 
-    // create class
-    const leagueRegistry = LeagueRegistry as any;
-    const leagueRegInstance = new web3.eth.Contract(
-      leagueRegistry.abi,
-      leagueRegistry.networks[networkId].address
+    const migration = new Migration(web3, networkId, accounts);
+    await migration.runMigration(
+      className,
+      leagueName,
+      participants,
+      year,
+      eventStartTime
     );
+    leagueAddress = migration.getLeagueAddress();
+    resolverAddress = migration.getResolverAddress();
+    betManagerAddress = migration.getBetManagerAddress();
+    backerAddress = accounts[3];
+    layerAddress = accounts[4];
+    nonApprovedAddress = accounts[6];
 
-    fromAddress = accounts[0];
-    backerAddress = accounts[1];
-    layerAddress = accounts[2];
-    resolverAddress = accounts[3];
-    const owner = accounts[0];
     fansunite = new FansUnite(web3, networkId);
-
-    // create class and league
-    await leagueRegInstance.methods.createClass(className).send({from: owner});
-    const tx = await leagueRegInstance.methods.createLeague(league.class, league.name,  '0x').send({from: owner, gas:6000000});
-    leagueAddress = tx.events.LogLeagueAdded.returnValues._league;
-
-
-    // schedule fixture
-    const league001 = League001 as any;
-    const leagueInstance = new web3.eth.Contract(
-      league001.abi,
-      leagueAddress
-    );
-    await leagueInstance.methods.addSeason(season).send( {from: owner});
-    await leagueInstance.methods.addParticipant('Leicester City', '0x').send( {from: owner, gas: 6000000});
-    await leagueInstance.methods.addParticipant('Manchester United', '0x').send( {from: owner, gas: 6000000});
-    await leagueInstance.methods.scheduleFixture(season, [1,2], 1545437384).send( {from: owner, gas: 6000000});
-    await leagueInstance.methods.registerResolver(resolverAddress).send({from:owner});
-
-    // Bet Manager
-    const betManager = BetManager as any;
-    betManagerAddress = betManager.networks[networkId].address;
-
-    // Vault
-    const vault = Vault as any;
-    const vaultInstance = new web3.eth.Contract(
-      vault.abi,
-      vault.networks[networkId].address
-    );
-    await vaultInstance.methods.addSpender(betManagerAddress).send({from:owner});
-
 
     bet = {
       backerAddress,
@@ -94,7 +64,7 @@ describe('FansUnite library', () => {
       feeRecipientAddress: accounts[2],
       leagueAddress,
       resolverAddress,
-      backerTokenStake: 2 * 10 ** TOKEN_DECIMALS,
+      backerTokenStake: 2 * 10 ** constants.TOKEN_DECIMALS,
       backerFee: 0,
       layerFee: 0,
       expirationTimeSeconds: 1545437384,
@@ -108,103 +78,147 @@ describe('FansUnite library', () => {
   describe('LeagueRegistry', () => {
     it('should get a list of league addresses by class name', async () => {
       const result = await fansunite.leagueRegistry.getLeaguesByClass(className);
-      // TODO
+      expect(result[0]).to.be.equal(leagueAddress);
     });
     it('should return a league by an address', async () => {
       const result = await fansunite.leagueRegistry.getLeague(leagueAddress);
-      // TODO
+      expect(result.address).to.be.equal(leagueAddress);
+      expect(result.name).to.be.equal(leagueName);
     });
-    it('should return a lst of populated leagues', async () => {
+    it('should return a list of populated leagues', async () => {
       const result = await fansunite.leagueRegistry.getClassWithLeagues(className);
-      // TODO
+      expect(result[0].address).to.be.equal(leagueAddress);
+      expect(result[0].name).to.be.equal(leagueName);
     });
-    it('should return true if league is registered', async () => {
+    it('should return `true` if league is registered', async () => {
       const result = await fansunite.leagueRegistry.isLeagueRegistered(leagueAddress);
-      // TODO
+      expect(result).to.be.equal(true);
     });
-    it('should return true if class is supported', async () => {
+    it('should return `false` if league is registered', async () => {
+      const result = await fansunite.leagueRegistry.isLeagueRegistered(constants.NULL_ADDRESS);
+      expect(result).to.be.equal(false);
+    });
+    it('should return `true` if class is supported', async () => {
       const result = await fansunite.leagueRegistry.isClassSupported(className);
-      // TODO
+      expect(result).to.be.equal(true);
+    });
+    it('should return `false` if class is supported', async () => {
+      const result = await fansunite.leagueRegistry.isClassSupported('not supported class');
+      expect(result).to.be.equal(false);
     });
   });
 
   describe('League001', () => {
     it('should return the name of the league', async () => {
       const result = await fansunite.league001.getName(leagueAddress);
-      // TODO
+      expect(result).to.be.equal(leagueName);
     });
     it('should return the class name of the league', async () => {
       const result = await fansunite.league001.getClass(leagueAddress);
-      // TODO
+      expect(result).to.be.equal(className);
     });
     it('should return the ipfs hash name of the league', async () => {
       const result = await fansunite.league001.getDetails(leagueAddress);
-      // TODO
+      expect(result).to.be.equal(constants.NULL_HASH); // TODO fix
     });
     it('should return the list of seasons for the league', async () => {
       const result = await fansunite.league001.getSeasons(leagueAddress);
-      // TODO
+      expect(result).to.be.lengthOf(1);
+      expect(Number(result[0])).to.be.equal(year);
     });
     it('should return the list of fixtures for the season for the league', async () => {
-      const result = await fansunite.league001.getSeason(leagueAddress, season);
-      // TODO
+      const result = await fansunite.league001.getSeason(leagueAddress, year);
+      expect(result).to.be.lengthOf(1);
+      expect(Number(result[0])).to.be.equal(fixtureId);
     });
     it('should return the list of participants for the league', async () => {
       // TODO: to implement in smart contract as an extension
-      // const result = await fansunite.league001.getParticipants(leagueAddress);
-      // console.log(result);
     });
     it('should return the participant for the league', async () => {
-      const result = await fansunite.league001.getParticipant(leagueAddress, 1);
-      // TODO
+      const result = await fansunite.league001.getParticipant(leagueAddress, participantId);
+      expect(result.id).to.be.equal(participantId);
+      expect(result.name).to.be.equal(participants[0]);
+      expect(result.details).to.be.equal(constants.NULL_HASH); // TODO fix
     });
     it('should return a fixture by its id for the league', async () => {
       const result = await fansunite.league001.getFixture(leagueAddress, fixtureId);
-      // TODO
+      expect(result.id).to.be.equal(fixtureId);
+      expect(result.participants).to.be.deep.equal([1,2]);
+      expect(result.start).to.be.deep.equal(eventStartTime);
     });
     it('should return a list of fixtures populated for the season', async () => {
-      const result = await fansunite.league001.getSeasonWithFixtures(leagueAddress, season);
-      // TODO
+      const result = await fansunite.league001.getSeasonWithFixtures(leagueAddress, year);
+      expect(result).to.be.lengthOf(1);
+      const fixture: Fixture = result[0] as Fixture;
+      expect(fixture.id).to.be.equal(fixtureId);
+      expect(fixture.participants).to.be.deep.equal([1,2]);
+      expect(fixture.start).to.be.deep.equal(eventStartTime);
     });
-    it('should return true if resolver is registered', async () => {
+    it('should return `true` if resolver is registered', async () => {
       const result = await fansunite.league001.isResolverRegistered(leagueAddress, resolverAddress);
-      // TODO
+      expect(result).to.be.equal(true);
     });
-    it('should return true if fixture is scheduled', async () => {
+    it('should return `false` if resolver is registered', async () => {
+      const result = await fansunite.league001.isResolverRegistered(leagueAddress, constants.NULL_ADDRESS);
+      expect(result).to.be.equal(false);
+    });
+    it('should return `true` if fixture is scheduled', async () => {
       const result = await fansunite.league001.isFixtureScheduled(leagueAddress, fixtureId);
-      // TODO
+      expect(result).to.be.equal(true);
+    });
+    it('should return `false` if fixture is scheduled', async () => {
+      const result = await fansunite.league001.isFixtureScheduled(leagueAddress, 2);
+      expect(result).to.be.equal(false);
     });
   });
 
   describe('Vault', () => {
     it('should approve the spender', async () => {
-      const result1 = await fansunite.vault.approve(betManagerAddress, backerAddress);
-      const result2 = await fansunite.vault.approve(betManagerAddress, layerAddress);
-      // TODO
+      await fansunite.vault.approve(betManagerAddress, backerAddress);
+      await fansunite.vault.approve(betManagerAddress, layerAddress);
+
+      const isBackerApproved = await fansunite.vault.isApproved(backerAddress, betManagerAddress);
+      const isLayerApproved = await fansunite.vault.isApproved(layerAddress, betManagerAddress);
+      const notApproved = await fansunite.vault.isApproved(nonApprovedAddress, betManagerAddress);
+
+      expect(isBackerApproved).to.be.equal(true);
+      expect(isLayerApproved).to.be.equal(true);
+      expect(notApproved).to.be.equal(false);
     });
     it('should deposit tokens', async () => {
-      const result1 = await fansunite.vault.deposit(tokenAddress, 3 * 10 ** TOKEN_DECIMALS, backerAddress);
-      const result = await fansunite.vault.deposit(tokenAddress, 3 * 10 ** TOKEN_DECIMALS, layerAddress);
-      // TODO
+      await fansunite.vault.deposit(tokenAddress, 3 * 10 ** constants.TOKEN_DECIMALS, backerAddress);
+      await fansunite.vault.deposit(tokenAddress, 2 * 10 ** constants.TOKEN_DECIMALS, layerAddress);
+
+      const backerBalance = await fansunite.vault.balanceOf(tokenAddress, backerAddress);
+      const layerBalance = await fansunite.vault.balanceOf(tokenAddress, layerAddress);
+
+      expect(Number(backerBalance)).to.be.equal(3 * 10 ** constants.TOKEN_DECIMALS);
+      expect(Number(layerBalance)).to.be.equal(2 * 10 ** constants.TOKEN_DECIMALS);
     });
     it('should withdraw tokens', async () => {
-      const result = await fansunite.vault.withdraw(tokenAddress, 1 * 10 ** TOKEN_DECIMALS, backerAddress);
-      // TODO
+      await fansunite.vault.withdraw(tokenAddress, 1 * 10 ** constants.TOKEN_DECIMALS, backerAddress);
+      const backerBalance = await fansunite.vault.balanceOf(tokenAddress, backerAddress);
+
+      expect(Number(backerBalance)).to.be.equal(2 * 10 ** constants.TOKEN_DECIMALS);
     });
     it('should retrieve the balance for token', async () => {
-      const result = await fansunite.vault.balanceOf(tokenAddress, fromAddress);
-      // TODO
+      const backerBalance = await fansunite.vault.balanceOf(tokenAddress, backerAddress);
+      expect(Number(backerBalance)).to.be.equal(2 * 10 ** constants.TOKEN_DECIMALS);
     });
-    it('should return the balance true if address has approved spender', async () => {
+    it('should return `true` if address has approved spender', async () => {
       const result = await fansunite.vault.isApproved(backerAddress, betManagerAddress);
-      // TODO
+      expect(result).to.be.equal(true);
+    });
+    it('should return `false` if address has approved spender', async () => {
+      const result = await fansunite.vault.isApproved(backerAddress, constants.NULL_ADDRESS);
+      expect(result).to.be.equal(false);
     });
   });
 
   describe('Registry', () => {
     it('should get the correct address using the `nameKey` BetManager ', async() => {
       const result = await fansunite.registry.getAddress('BetManager');
-      // TODO
+      expect(result.toLowerCase()).to.be.equal(betManagerAddress.toLowerCase());
     });
   });
 
@@ -239,6 +253,5 @@ describe('FansUnite library', () => {
       // TODO
     });
   });
-
 
 });

@@ -4,7 +4,6 @@ export {
   Fixture,
   Bet,
   NewSignedBet
-} from './types';
-
+} from './types/index';
 
 export { FansUnite } from './fansunite';

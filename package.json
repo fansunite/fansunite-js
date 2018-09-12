@@ -20,8 +20,8 @@
     "run_mocha": "mocha lib/test/*.js",
     "prettier": "prettier --write 'src/**/*.ts' 'test/**/*.ts'",
     "remove_web3_types": "rm -f node_modules/web3/index.d.ts",
-    "postinstall": "run-s remove_web3_types build",
-    "rebuild_artifacts": "scripts/build_artifacts.sh"
+    "rebuild_artifacts": "scripts/build_artifacts.sh",
+    "prepare": "run-s remove_web3_types build"
   },
   "devDependencies": {
     "chai": "^4.1.2",

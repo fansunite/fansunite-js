@@ -19,15 +19,14 @@
     "lint": "tslint --project . 'src/**/*.ts' 'test/**/*.ts'",
     "run_mocha": "mocha lib/test/*.js",
     "prettier": "prettier --write 'src/**/*.ts' 'test/**/*.ts'",
-    "postinstall": "rm -f node_modules/web3/index.d.ts",
-    "rebuild_artifacts": "scripts/build_artifacts.sh",
-    "prepare": "npm run build"
+    "remove_web3_types": "rm -f node_modules/web3/index.d.ts",
+    "postinstall": "run-s remove_web3_types build",
+    "rebuild_artifacts": "scripts/build_artifacts.sh"
   },
   "devDependencies": {
     "chai": "^4.1.2",
     "ganache-cli": "^6.1.8",
     "mocha": "^5.2.0",
-    "npm-run-all": "^4.1.3",
     "prettier": "1.14.2",
     "shx": "^0.3.2",
     "truffle": "^4.1.14",
@@ -36,6 +35,7 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
+    "npm-run-all": "^4.1.3",
     "copyfiles": "^2.0.0",
     "@types/chai": "^4.1.4",
     "@types/mocha": "^5.2.5",

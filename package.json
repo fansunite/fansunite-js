@@ -19,7 +19,7 @@
     "lint": "tslint --project . 'src/**/*.ts' 'test/**/*.ts'",
     "run_mocha": "mocha lib/test/*.js",
     "prettier": "prettier --write 'src/**/*.ts' 'test/**/*.ts'",
-    "remove_web3_types": "rm -f node_modules/web3/index.d.ts",
+    "remove_web3_types:": "rm -f node_modules/web3/index.d.ts",
     "rebuild_artifacts": "scripts/build_artifacts.sh",
     "prepare": "run-s remove_web3_types build"
   },
@@ -31,10 +31,10 @@
     "shx": "^0.3.2",
     "truffle": "^4.1.14",
     "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
-    "typescript": "^3.0.1"
+    "tslint-config-prettier": "^1.15.0"
   },
   "dependencies": {
+    "typescript": "^3.0.1",
     "npm-run-all": "^4.1.3",
     "copyfiles": "^2.0.0",
     "@types/chai": "^4.1.4",

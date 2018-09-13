@@ -2,12 +2,6 @@
 # yarn lockfile v1
 
 
-"@types/bn.js@*":
-  version "4.11.1"
-  resolved "https://registry.yarnpkg.com/@types/bn.js/-/bn.js-4.11.1.tgz#6fd07b93490ecf0f3501a31ea9cfd330885b10fa"
-  dependencies:
-    "@types/node" "*"
-
 "@types/chai@^4.1.4":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.4.tgz#5ca073b330d90b4066d6ce18f60d57f2084ce8ca"
@@ -16,20 +10,9 @@
   version "5.2.5"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-5.2.5.tgz#8a4accfc403c124a0bafe8a9fc61a05ec1032073"
 
-"@types/node@*":
-  version "10.7.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.7.1.tgz#b704d7c259aa40ee052eec678758a68d07132a2e"
-
-"@types/underscore@*", "@types/underscore@^1.8.9":
+"@types/underscore@^1.8.9":
   version "1.8.9"
   resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.8.9.tgz#fef41f800cd23db1b4f262ddefe49cd952d82323"
-
-"@types/web3@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@types/web3/-/web3-1.0.4.tgz#93f5b7a88def1fc5ca0469a719633cba48907ea9"
-  dependencies:
-    "@types/bn.js" "*"
-    "@types/underscore" "*"
 
 accepts@~1.3.5:
   version "1.3.5"

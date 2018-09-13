@@ -24,9 +24,9 @@
   version "1.8.9"
   resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.8.9.tgz#fef41f800cd23db1b4f262ddefe49cd952d82323"
 
-"@types/web3@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@types/web3/-/web3-1.0.3.tgz#2c5f6905d46eb6e40da8eb7c1e553463862fa599"
+"@types/web3@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@types/web3/-/web3-1.0.4.tgz#93f5b7a88def1fc5ca0469a719633cba48907ea9"
   dependencies:
     "@types/bn.js" "*"
     "@types/underscore" "*"

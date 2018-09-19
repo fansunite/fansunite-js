@@ -13,9 +13,8 @@ yarn-error.log*
 
 # Dependency directories
 node_modules/
+lib/test
 
-# dotenv environment variables file
-.env
 
 # Project Specific
 TODO.md

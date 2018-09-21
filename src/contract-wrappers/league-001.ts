@@ -46,7 +46,7 @@ export class League001 extends ContractWrapper {
     const result = await instance.methods.getFixture(id).call();
     const fixture: Fixture = {
       id: Number(result[0]),
-      participants: result[1],
+      participants: result[1].map((p: string) => Number(p)),
       start: Number(result[2])
     };
     return fixture;

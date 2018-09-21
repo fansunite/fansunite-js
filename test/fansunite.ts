@@ -253,8 +253,7 @@ describe('FansUnite library', () => {
     it('should fill a bet', async() => {
       const signedBet = await fansunite.newSignedBet(bet, layerTokenFillAmount);
       const betHash = await fansunite.hashBet(bet);
-      const fillBet = await fansunite.betManager.fillBet(signedBet, layerTokenFillAmount, layerAddress);
-      const filled = await fansunite.betManager.filled(betHash);
+      // TODO
     });
   });
 

@@ -16319,7 +16319,120 @@
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "15": {
+      "events": {
+        "0x8dc61913ee8b0c3c30d3073f36ed3d12dcea1dcaa3e9d83d9def86e1a466dbf5": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_hash",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "name": "_backer",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_layer",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_subjects",
+              "type": "address[3]"
+            },
+            {
+              "indexed": false,
+              "name": "_params",
+              "type": "uint256[4]"
+            },
+            {
+              "indexed": false,
+              "name": "_nonce",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "_payload",
+              "type": "bytes"
+            }
+          ],
+          "name": "LogBetSubmitted",
+          "type": "event"
+        },
+        "0x6e7b1c0fef63382f05aa7c9cbe8f66c67fbb68e0892f8e8347b0ea3ef615850c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_old",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "_new",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogChainIdUpdated",
+          "type": "event"
+        },
+        "0xac30d8052f0f0b16633b84a524d67bc067dc436c3e98f1c0bf4f6663d102fb6c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_old",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_new",
+              "type": "address"
+            }
+          ],
+          "name": "LogRegistryUpdated",
+          "type": "event"
+        },
+        "0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipRenounced",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x7bf7bb74c43dc141293aff12a2d7de350e9b09e0",
+      "transactionHash": "0xfcf733c28b680232ff900c7232198097962f8d664b2e1a65fb6ae1efa1c33a5a"
+    }
+  },
   "schemaVersion": "2.0.1",
   "updatedAt": "2018-09-24T20:13:33.974Z"
 }

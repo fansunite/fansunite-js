@@ -8401,7 +8401,124 @@
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "15": {
+      "events": {
+        "0xac30d8052f0f0b16633b84a524d67bc067dc436c3e98f1c0bf4f6663d102fb6c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_old",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_new",
+              "type": "address"
+            }
+          ],
+          "name": "LogRegistryUpdated",
+          "type": "event"
+        },
+        "0x3137f7805dea90931b7ba6876268be1604a903bb2a3ff66e2e79e22ec61d826b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_class",
+              "type": "string"
+            }
+          ],
+          "name": "LogClassCreated",
+          "type": "event"
+        },
+        "0x062be8aac826db3901b2bf89646df96b5d5b75f58614983de25701a6117a995e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_league",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_class",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "_name",
+              "type": "string"
+            }
+          ],
+          "name": "LogLeagueAdded",
+          "type": "event"
+        },
+        "0xf706e39cbc6be43016d2c5bf822f176b432c715763bff9e02a1966a4655f5bc0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_version",
+              "type": "string"
+            },
+            {
+              "indexed": true,
+              "name": "_factory",
+              "type": "address"
+            }
+          ],
+          "name": "LogFactoryUpdated",
+          "type": "event"
+        },
+        "0x3d46e24cba08016d549ccbb2521ab53302f1823836ef2fba2584b8e13141db90": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_version",
+              "type": "string"
+            }
+          ],
+          "name": "LogFactoryVersionUpdated",
+          "type": "event"
+        },
+        "0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipRenounced",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x6000eca38b8b5bba64986182fe2a69c57f6b5414",
+      "transactionHash": "0xa20e4f55cdcd2083dff2540d69326c38d997e72284232c9b8663e9f2a976f879"
+    }
+  },
   "schemaVersion": "2.0.1",
   "updatedAt": "2018-09-24T20:13:33.954Z"
 }

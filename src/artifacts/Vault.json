@@ -9649,7 +9649,73 @@
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "15": {
+      "events": {
+        "0x3e9e267e2e5acc9ced8daa824bf7d331d04a10f26414f3ecddbe10786dc647a2": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_spender",
+              "type": "address"
+            }
+          ],
+          "name": "LogSpenderAdded",
+          "type": "event"
+        },
+        "0xac30d8052f0f0b16633b84a524d67bc067dc436c3e98f1c0bf4f6663d102fb6c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_old",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_new",
+              "type": "address"
+            }
+          ],
+          "name": "LogRegistryUpdated",
+          "type": "event"
+        },
+        "0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipRenounced",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x8726c7414ac023d23348326b47af3205185fd035",
+      "transactionHash": "0x140f3ccd772e01142f1447a55a4eb6de9ba363c7ddb6c5328d790b7df04dbe22"
+    }
+  },
   "schemaVersion": "2.0.1",
   "updatedAt": "2018-09-24T20:13:33.961Z"
 }

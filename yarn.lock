@@ -11,8 +11,8 @@
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-5.2.5.tgz#8a4accfc403c124a0bafe8a9fc61a05ec1032073"
 
 "@types/node@^10.3.2":
-  version "10.10.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.10.2.tgz#2a55b8d66f6945efc5da38489774e551248aa169"
+  version "10.11.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.11.3.tgz#c055536ac8a5e871701aa01914be5731539d01ee"
 
 "@types/node@^10.9.4":
   version "10.9.4"
@@ -921,9 +921,9 @@ extsprintf@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
 
-"fansunite-core@git+ssh://git@github.com:fansunite/fansunite-core.git#development":
+"fansunite-core@git+ssh://git@github.com:fansunite/fansunite-core.git#bet-manager/master":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:fansunite/fansunite-core.git#011a3216f102e328211e42e7d52d254b414b6366"
+  resolved "git+ssh://git@github.com:fansunite/fansunite-core.git#a0b8baf10f572cd1a70af3c695a81f8532250a4a"
   dependencies:
     bignumber.js "^7.2.1"
     openzeppelin-solidity "1.10.0"

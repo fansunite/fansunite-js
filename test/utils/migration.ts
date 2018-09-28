@@ -45,12 +45,13 @@ export class Migration {
 
   public async runMigration(
     className: string,
+    participantsPerFixture: number,
     leagueName: string,
     participants: string[],
     year: number,
     eventStartTime: number
   ) {
-    await this.createClass(className);
+    await this.createClass(className, participantsPerFixture);
     await this.createLeague(className, leagueName);
 
     const league001 = League001 as any;
@@ -80,12 +81,12 @@ export class Migration {
   }
 
   private async createLeague(className: string, leagueName: string) {
-    const tx = await this.leagueRegInstance.methods.createLeague(className, leagueName, constants.NULL_HASH).send({from: this.owner, gas: 6000000});
+    const tx = await this.leagueRegInstance.methods.createLeague(className, leagueName).send({from: this.owner, gas: 6000000});
     this.leagueAddress = tx.events.LogLeagueAdded.returnValues._league;
   }
 
-  private async createClass(className: string) {
-    await this.leagueRegInstance.methods.createClass(className).send({from: this.owner});
+  private async createClass(className: string, participantsPerFixture: number) {
+    await this.leagueRegInstance.methods.createClass(className, participantsPerFixture).send({from: this.owner, gas: 6000000});
   }
 
   private async addSeason(year: number) {

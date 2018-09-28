@@ -10,6 +10,7 @@ import { Migration } from './utils/migration'
 let fansunite: FansUnite;
 
 const className = 'soccer';
+const participantsPerFixture = 2;
 const leagueName = 'English Premiership';
 const participants = [
   'Leicester City',
@@ -42,6 +43,7 @@ describe('FansUnite library', () => {
     const migration = new Migration(web3, networkId, accounts);
     await migration.runMigration(
       className,
+      participantsPerFixture,
       leagueName,
       participants,
       year,

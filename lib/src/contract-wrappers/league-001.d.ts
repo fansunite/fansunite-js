@@ -6,7 +6,6 @@ export declare class League001 extends ContractWrapper {
     getName(leagueAddress: string): Promise<any>;
     getClass(leagueAddress: string): Promise<any>;
     getVersion(leagueAddress: string): Promise<any>;
-    getDetails(leagueAddress: string): Promise<any>;
     getSeasons(leagueAddress: string): Promise<any>;
     getSeason(leagueAddress: string, year: number): Promise<any>;
     getFixture(leagueAddress: string, id: number): Promise<Fixture>;

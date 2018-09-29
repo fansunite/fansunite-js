@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "bignumber.js": "^7.2.1",
-    "fansunite-core": "https://github.com/fansunite/fansunite-core.git#bet-manager/partial-fill",
+    "fansunite-core": "https://github.com/fansunite/fansunite-core.git#bet-manager/master",
     "web3": "^1.0.0-beta.35"
   }
 }

@@ -19,3 +19,5 @@ lib/test
 # Project Specific
 TODO.md
 .swp
+
+*.js.map

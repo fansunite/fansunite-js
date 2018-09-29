@@ -3,5 +3,6 @@ export declare const artifacts: {
     League001: any;
     LeagueRegistry: any;
     Registry: any;
+    ResolverRegistry: any;
     Vault: any;
 };

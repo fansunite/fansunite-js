@@ -6,19 +6,20 @@ export class ResolverRegistry extends ContractWrapper {
     super(web3, networkId);
   }
 
-  public addResolver(className: string, resolver: string, from: string) {
+  public async addResolver(className: string, resolver: string, from: string) {
     const instance = this._getResolverRegistryInstance();
-    return instance.methods.addResolver(className, resolver, { from });
+    return instance.methods.addResolver(className, resolver).send({ from });
   }
 
-  public getResolvers(className: string) {
+  public async getResolvers(className: string) {
     const instance = this._getResolverRegistryInstance();
     return instance.methods.getResolvers(className).call();
   }
 
-  public isResolverRegistered(className: string, resolver: string) {
+  public async isResolverRegistered(className: string, resolver: string) {
     const instance = this._getResolverRegistryInstance();
-    return instance.methods.isResolverRegistered(className, resolver).call();
+    const isResolverRegistered = await instance.methods.isResolverRegistered(className, resolver).call();
+    return Number(isResolverRegistered);
   }
 
   private _getResolverRegistryInstance() {

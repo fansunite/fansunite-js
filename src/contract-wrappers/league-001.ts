@@ -25,11 +25,6 @@ export class League001 extends ContractWrapper {
     return instance.methods.getVersion().call();
   }
 
-  public async getDetails(leagueAddress: string) {
-    const instance = this._getLeagueContractInstance(leagueAddress);
-    return instance.methods.getDetails().call();
-  }
-
   public async getSeasons(leagueAddress: string) {
     const instance = this._getLeagueContractInstance(leagueAddress);
     return instance.methods.getSeasons().call();

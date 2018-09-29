@@ -8,6 +8,7 @@ import { constants } from './utils/constants';
 import { Migration } from './utils/migration'
 
 let fansunite: FansUnite;
+let accounts = [];
 
 const className = 'soccer';
 const participantsPerFixture = 2;
@@ -27,6 +28,7 @@ let resolverAddress: string;
 let betManagerAddress: string;
 let backerAddress: string;
 let nonApprovedAddress: string;
+let pendingResolverAddress: string;
 let layerAddress: string;
 const tokenAddress = constants.NULL_ADDRESS; // ETH Token
 
@@ -38,7 +40,7 @@ describe('FansUnite library', () => {
     // @ts-ignore
     const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
     const networkId = await web3.eth.net.getId();
-    const accounts = await web3.eth.getAccounts();
+    accounts = await web3.eth.getAccounts();
 
     const migration = new Migration(web3, networkId, accounts);
     await migration.runMigration(
@@ -52,9 +54,11 @@ describe('FansUnite library', () => {
     leagueAddress = migration.getLeagueAddress();
     resolverAddress = migration.getResolverAddress();
     betManagerAddress = migration.getBetManagerAddress();
+    resolverAddress = migration.getResolverAddress();
     backerAddress = accounts[3];
     layerAddress = accounts[4];
     nonApprovedAddress = accounts[6];
+    pendingResolverAddress = accounts[6];
 
     fansunite = new FansUnite(web3, networkId);
 
@@ -122,10 +126,6 @@ describe('FansUnite library', () => {
     it('should return version of the league', async () => {
       const result = await fansunite.league001.getVersion(leagueAddress);
       expect(result).to.be.equal('0.0.1');
-    });
-    it('should return the ipfs hash name of the league', async () => {
-      const result = await fansunite.league001.getDetails(leagueAddress);
-      expect(result).to.be.equal(constants.NULL_HASH); // TODO fix
     });
     it('should return the list of seasons for the league', async () => {
       const result = await fansunite.league001.getSeasons(leagueAddress);
@@ -233,6 +233,25 @@ describe('FansUnite library', () => {
     it('should get the correct address using the `nameKey` BetManager ', async() => {
       const result = await fansunite.registry.getAddress('BetManager');
       expect(result.toLowerCase()).to.be.equal(betManagerAddress.toLowerCase());
+    });
+  });
+
+  describe('ResolverRegistry', () => {
+
+    it('should successfully add a resolver', async () => {
+      await fansunite.resolverRegistry.addResolver(className, pendingResolverAddress, accounts[0]);
+      const result = await fansunite.resolverRegistry.isResolverRegistered(className, pendingResolverAddress);
+      expect(result).to.be.equal(1);
+    });
+
+    it('should successfully get the list of resolvers', async () => {
+      const result = await fansunite.resolverRegistry.getResolvers(className);
+      expect(result).to.be.deep.equal([resolverAddress]);
+    });
+
+    it('should return `true` if resolver is registered', async () => {
+      const result = await fansunite.resolverRegistry.isResolverRegistered(className, resolverAddress);
+      expect(result).to.be.equal(2);
     });
   });
 

@@ -36,6 +36,8 @@ init() {
     cp build/contracts/League001.json ../../lib/src/artifacts/League001.json
     cp build/contracts/LeagueRegistry.json ../../lib/src/artifacts/LeagueRegistry.json
     cp build/contracts/Registry.json ../../lib/src/artifacts/Registry.json
+    cp build/contracts/ResolverRegistry.json ../../lib/src/artifacts/ResolverRegistry.json
+    cp build/contracts/RMoneyLine2.json ../../lib/src/artifacts/RMoneyLine2.json
     ../../node_modules/.bin/mocha ../../lib/test/*.js
   fi
 

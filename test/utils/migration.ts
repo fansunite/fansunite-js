@@ -21,6 +21,7 @@ export class Migration {
   private resolverAddress: string;
   private betManagerAddress: string;
   private gas: number;
+  private resolutionPayload: string;
 
   public constructor (web3: Web3, networkId: number, accounts: string[]) {
 
@@ -31,6 +32,7 @@ export class Migration {
     this.resolverAddress = accounts[5];
     this.leagueAddress = constants.NULL_ADDRESS;
     this.gas = 6000000;
+    this.resolutionPayload = '0x0123';
 
     const leagueRegistry = LeagueRegistry as any;
     this.leagueRegInstance = new this.web3.eth.Contract(
@@ -77,6 +79,8 @@ export class Migration {
     await this.scheduleFixture(year, [1,2], eventStartTime);
     await this.createResolver();
     await this.registerResolver(className, this.resolverAddress);
+
+    await this.pushResolution(1, this.resolverAddress, this.resolutionPayload);
     await this.addSpender(this.betManagerAddress);
   }
 
@@ -90,6 +94,10 @@ export class Migration {
 
   public getBetManagerAddress(){
     return this.betManagerAddress;
+  }
+
+  public getResolutionPayload(){
+    return this.resolutionPayload;
   }
 
   private async createLeague(className: string, leagueName: string) {
@@ -117,6 +125,10 @@ export class Migration {
     await this.resolverRegistryInstance.methods.addResolver(className, resolverAddress).send({from: this.owner});
     await this.resolverRegistryInstance.methods.registerResolver(className, resolverAddress).send({from: this.owner, gas: this.gas});
     await this.leagueInstance.methods.registerResolver(resolverAddress).send({from: this.owner, gas: this.gas});
+  }
+
+  private async pushResolution(fixtureId: number, resolverAddress: string, resolutionPayload: string) {
+    await this.leagueInstance.methods.pushResolution(fixtureId, resolverAddress, resolutionPayload).send({from: this.owner, gas: this.gas});
   }
 
   private async addSpender(address: string) {

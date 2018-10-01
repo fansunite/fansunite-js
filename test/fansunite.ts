@@ -32,6 +32,8 @@ let pendingResolverAddress: string;
 let layerAddress: string;
 const tokenAddress = constants.NULL_ADDRESS; // ETH Token
 
+let resolutionPayload: string;
+
 let bet: Bet;
 
 describe('FansUnite library', () => {
@@ -59,6 +61,8 @@ describe('FansUnite library', () => {
     layerAddress = accounts[4];
     nonApprovedAddress = accounts[6];
     pendingResolverAddress = accounts[6];
+
+    resolutionPayload = migration.getResolutionPayload();
 
     fansunite = new FansUnite(web3, networkId);
 
@@ -159,6 +163,15 @@ describe('FansUnite library', () => {
       expect(fixture.id).to.be.equal(fixtureId);
       expect(fixture.participants).to.be.deep.equal([1,2]);
       expect(fixture.start).to.be.deep.equal(eventStartTime);
+    });
+    it('should return a list of registered resolvers', async () => {
+      const result = await fansunite.league001.getResolvers(leagueAddress);
+      expect(result).to.be.lengthOf(1);
+      expect(result).to.be.deep.equal([resolverAddress]);
+    });
+    it('should return the resolution for a given fixture id and resolver', async () => {
+      const result = await fansunite.league001.getResolution(leagueAddress, fixtureId, resolverAddress);
+      expect(result).to.be.equal(resolutionPayload);
     });
     it('should return `true` if resolver is registered', async () => {
       const result = await fansunite.league001.isResolverRegistered(leagueAddress, resolverAddress);

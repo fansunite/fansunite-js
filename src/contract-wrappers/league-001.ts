@@ -56,8 +56,6 @@ export class League001 extends ContractWrapper {
 
   public async getParticipants(leagueAddress: string) {
     // TODO implement in smart contract
-    const instance = this._getLeagueContractInstance(leagueAddress);
-    return instance.methods.getParticipants.call();
   }
 
   public async getParticipant(leagueAddress: string, id: number) {
@@ -69,6 +67,16 @@ export class League001 extends ContractWrapper {
       details: result[2]
     };
     return participant;
+  }
+
+  public async getResolvers(leagueAddress: string) {
+    const instance = this._getLeagueContractInstance(leagueAddress);
+    return instance.methods.getResolvers().call();
+  }
+
+  public async getResolution(leagueAddress: string, fixtureId: number, resolver: string) {
+    const instance = this._getLeagueContractInstance(leagueAddress);
+    return instance.methods.getResolution(fixtureId, resolver).call();
   }
 
   public async isParticipant(leagueAddress: string, id: number) {

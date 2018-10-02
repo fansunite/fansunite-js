@@ -6,8 +6,6 @@ export interface League {
 
 export interface Participant {
   id: number;
-  name: string;
-  details: string;
 }
 
 export interface Fixture {
@@ -17,23 +15,28 @@ export interface Fixture {
 }
 
 export interface Bet {
-  backer: string;
-  layer: string;
-  token: string;
-  league: string;
-  resolver: string;
-  backerStake: number;
-  fixture: number;
-  odds: number;
-  expiration: number;
-  nonce: number;
-  payload: string;
+  backerAddress: string;
+  layerAddress: string;
+  backerTokenAddress: string;
+  layerTokenAddress: string;
+  feeRecipientAddress: string;
+  leagueAddress: string;
+  resolverAddress: string;
+  backerTokenStake: number;
+  backerFee: number;
+  layerFee: number;
+  expirationTimeSeconds: number;
+  fixtureId: number;
+  backerOdds: number;
+  salt: number;
+  betPayload: string;
 }
 
 export interface NewSignedBet {
-  subjects: string[];
-  params: number[];
-  nonce: number;
-  payload: string;
+  betAddresses: string[];
+  betValues: number[];
+  layerTokenAmount: number;
+  salt: number;
+  betPayload: string;
   signature: string;
 }

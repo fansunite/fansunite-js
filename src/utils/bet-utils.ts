@@ -3,29 +3,34 @@ import { Bet, NewSignedBet } from '../types';
 
 BigNumber.set({ DECIMAL_PLACES: 78 });
 
-export async function newSignedBet(bet: Bet, signature: string) {
+export async function newSignedBet(bet: Bet, layerTokenAmount: number, betPayload: string, signature: string) {
   const newBet: NewSignedBet = {
-    subjects: [
-      bet.backer,
-      bet.layer,
-      bet.token,
-      bet.league,
-      bet.resolver
+    betAddresses: [
+      bet.backerAddress,
+      bet.layerAddress,
+      bet.backerTokenAddress,
+      bet.layerTokenAddress,
+      bet.feeRecipientAddress,
+      bet.leagueAddress,
+      bet.resolverAddress
     ],
-    params: [
-      bet.backerStake,
-      bet.fixture,
-      bet.odds,
-      bet.expiration
+    betValues: [
+      bet.backerTokenStake,
+      bet.backerFee,
+      bet.layerFee,
+      bet.expirationTimeSeconds,
+      bet.fixtureId,
+      bet.backerOdds
     ],
-    payload: bet.payload,
-    nonce: bet.nonce,
+    layerTokenAmount,
+    salt: bet.salt,
+    betPayload,
     signature
   };
   return newBet;
 }
 
-export function generateNonce() {
+export function generateSalt() {
   const randomNumber = BigNumber.random(9);
   const factor = new BigNumber(10).pow(9 - 1);
   const salt = randomNumber

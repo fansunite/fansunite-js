@@ -1,5 +1,5 @@
 import { artifacts } from '../artifacts';
-import { Fixture, Participant } from '../types';
+import { Fixture } from '../types';
 import { ContractWrapper } from './contract-wrapper';
 
 export class League001 extends ContractWrapper {
@@ -20,9 +20,9 @@ export class League001 extends ContractWrapper {
     return instance.methods.getClass().call();
   }
 
-  public async getVersion(leagueAddress: string) {
+  public async getDetails(leagueAddress: string) {
     const instance = this._getLeagueContractInstance(leagueAddress);
-    return instance.methods.getVersion().call();
+    return instance.methods.getDetails().call();
   }
 
   public async getSeasons(leagueAddress: string) {
@@ -40,17 +40,11 @@ export class League001 extends ContractWrapper {
     const instance = this._getLeagueContractInstance(leagueAddress);
     const result = await instance.methods.getFixture(id).call();
     const fixture: Fixture = {
-      id: Number(result[0]),
-      participants: result[1].map((p: string) => Number(p)),
-      start: Number(result[2])
+      id: result[0],
+      participants: result[1],
+      start: result[2]
     };
     return fixture;
-  }
-
-  public async getFixtureStart(leagueAddress: string, id: number) {
-    const instance = this._getLeagueContractInstance(leagueAddress);
-    const result = await instance.methods.getFixtureStart(id).call();
-    return Number(result);
   }
 
   public async getSeasonWithFixtures(leagueAddress: string, year: number) {
@@ -61,42 +55,14 @@ export class League001 extends ContractWrapper {
   }
 
   public async getParticipants(leagueAddress: string) {
-    let participants = Array.apply(null, {length: await this.getParticipantCount(leagueAddress)}).map(Number.call, Number);
-    const participantPromises = participants.map(async(n: number) => this.getParticipant(leagueAddress, n+1));
-    participants = await Promise.all(participantPromises);
-    return participants;
-  }
-
-  public async getParticipantCount(leagueAddress: string) {
+    // TODO implement in smart contract
     const instance = this._getLeagueContractInstance(leagueAddress);
-    const count = await instance.methods.getParticipantCount().call();
-    return Number(count);
+    return instance.methods.getParticipants.call();
   }
 
   public async getParticipant(leagueAddress: string, id: number) {
     const instance = this._getLeagueContractInstance(leagueAddress);
-    const result = await instance.methods.getParticipant(id).call();
-    const participant: Participant = {
-      id:  Number(result[0]),
-      name: result[1],
-      details: result[2]
-    };
-    return participant;
-  }
-
-  public async getResolvers(leagueAddress: string) {
-    const instance = this._getLeagueContractInstance(leagueAddress);
-    return instance.methods.getResolvers().call();
-  }
-
-  public async getResolution(leagueAddress: string, fixtureId: number, resolver: string) {
-    const instance = this._getLeagueContractInstance(leagueAddress);
-    return instance.methods.getResolution(fixtureId, resolver).call();
-  }
-
-  public async isParticipant(leagueAddress: string, id: number) {
-    const instance = this._getLeagueContractInstance(leagueAddress);
-    return instance.methods.isParticipant(id).call();
+    return instance.methods.getParticipant(id).call();
   }
 
   public async isResolverRegistered(leagueAddress: string, resolverAddress: string) {

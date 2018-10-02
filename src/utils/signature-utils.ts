@@ -1,7 +1,7 @@
 import { Bet } from '../types';
 
-export async function signBet(web3: any, bet: Bet, hash: string) {
-  const sig = (await web3.eth.sign(hash, bet.backer)).slice(2);
+export async function signBet(web3: any, bet: Bet, betHash: string) {
+  const sig = (await web3.eth.sign(betHash, bet.backerAddress)).slice(2);
 
   const r = Buffer.from(sig.substring(0, 64), 'hex');
   const s = Buffer.from(sig.substring(64, 128), 'hex');

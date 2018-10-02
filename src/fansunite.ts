@@ -21,9 +21,11 @@ export class FansUnite {
   public vault: Vault;
 
   private web3: any;
+  private networkId: number;
 
   constructor(web3: any, networkId: number) {
     this.web3 = web3;
+    this.networkId = networkId;
 
     this.betManager = new BetManager(web3, networkId);
     this.league001 = new League001(web3, networkId);
@@ -34,17 +36,17 @@ export class FansUnite {
   }
 
   public hashBet(bet: Bet) {
-    return hashBet(bet);
+    return hashBet(bet, this.networkId);
   }
 
   public async signBet(bet: Bet) {
     return signBet(this.web3, bet, this.hashBet(bet));
   }
 
-  public async newSignedBet(bet: Bet, layerTokenAmount: number) {
-    bet.salt = this.generateNonce();
+  public async newSignedBet(bet: Bet) {
+    bet.nonce = this.generateNonce();
     const signature = await this.signBet(bet);
-    return newSignedBet(bet, layerTokenAmount, bet.betPayload, signature);
+    return newSignedBet(bet, signature);
   }
 
   public generateNonce() {

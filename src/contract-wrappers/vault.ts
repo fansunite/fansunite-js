@@ -37,6 +37,11 @@ export class Vault extends ContractWrapper {
     return instance.methods.isApproved(user, spender).call();
   }
 
+  public async isSpender(spender: string) {
+    const instance = this._getVaultInstance();
+    return instance.methods.isSpender(spender).call();
+  }
+
   private _getVaultInstance() {
     return new this.web3.eth.Contract(artifacts.Vault.abi, artifacts.Vault.networks[this.networkId].address);
   }

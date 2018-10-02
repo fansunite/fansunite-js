@@ -21,20 +21,22 @@ const year = 2018;
 const fixtureId = 1;
 const participantId = 1;
 const eventStartTime = 1545437384;
-const layerTokenFillAmount = 1 * 10 ** constants.TOKEN_DECIMALS;
 
 let leagueAddress: string;
-let resolverAddress: string;
+let resolvedResolverAddress: string;
+let unresolvedResolverAddress: string;
 let betManagerAddress: string;
 let backerAddress: string;
 let nonApprovedAddress: string;
 let pendingResolverAddress: string;
 let layerAddress: string;
 const tokenAddress = constants.NULL_ADDRESS; // ETH Token
+const odds = 2;
 
 let resolutionPayload: string;
 
 let bet: Bet;
+let migration: Migration;
 
 describe('FansUnite library', () => {
   before(async () => {
@@ -44,7 +46,7 @@ describe('FansUnite library', () => {
     const networkId = await web3.eth.net.getId();
     accounts = await web3.eth.getAccounts();
 
-    const migration = new Migration(web3, networkId, accounts);
+    migration = new Migration(web3, networkId, accounts);
     await migration.runMigration(
       className,
       participantsPerFixture,
@@ -54,9 +56,9 @@ describe('FansUnite library', () => {
       eventStartTime
     );
     leagueAddress = migration.getLeagueAddress();
-    resolverAddress = migration.getResolverAddress();
+    resolvedResolverAddress = migration.getResolvedResolverAddress();
+    unresolvedResolverAddress = migration.getUnresolvedResolverAddress();
     betManagerAddress = migration.getBetManagerAddress();
-    resolverAddress = migration.getResolverAddress();
     backerAddress = accounts[3];
     layerAddress = accounts[4];
     nonApprovedAddress = accounts[6];
@@ -67,21 +69,17 @@ describe('FansUnite library', () => {
     fansunite = new FansUnite(web3, networkId);
 
     bet = {
-      backerAddress,
-      layerAddress: constants.NULL_ADDRESS,
-      backerTokenAddress: constants.NULL_ADDRESS,
-      layerTokenAddress: constants.NULL_ADDRESS,
-      feeRecipientAddress: accounts[2],
-      leagueAddress,
-      resolverAddress,
-      backerTokenStake: 2 * 10 ** constants.TOKEN_DECIMALS,
-      backerFee: 0,
-      layerFee: 0,
-      expirationTimeSeconds: 1545437384,
-      fixtureId,
-      backerOdds: 2 * 10 ** 8,
-      betPayload: '0x4e5ef893',
-      salt: 2401286
+      backer: backerAddress,
+      layer: layerAddress,
+      token: constants.NULL_ADDRESS,
+      league: leagueAddress,
+      resolver: unresolvedResolverAddress,
+      backerStake: 2 * 10 ** constants.TOKEN_DECIMALS,
+      fixture: fixtureId,
+      odds: odds * 10 ** constants.ODDS_DECIMALS,
+      expiration: 1893456000,
+      payload: '0x4e5ef893',
+      nonce: 1
     };
   });
 
@@ -166,15 +164,15 @@ describe('FansUnite library', () => {
     });
     it('should return a list of registered resolvers', async () => {
       const result = await fansunite.league001.getResolvers(leagueAddress);
-      expect(result).to.be.lengthOf(1);
-      expect(result).to.be.deep.equal([resolverAddress]);
+      expect(result).to.be.lengthOf(2);
+      expect(result).to.be.deep.equal([resolvedResolverAddress, unresolvedResolverAddress]);
     });
     it('should return the resolution for a given fixture id and resolver', async () => {
-      const result = await fansunite.league001.getResolution(leagueAddress, fixtureId, resolverAddress);
+      const result = await fansunite.league001.getResolution(leagueAddress, fixtureId, resolvedResolverAddress);
       expect(result).to.be.equal(resolutionPayload);
     });
     it('should return `true` if resolver is registered', async () => {
-      const result = await fansunite.league001.isResolverRegistered(leagueAddress, resolverAddress);
+      const result = await fansunite.league001.isResolverRegistered(leagueAddress, resolvedResolverAddress);
       expect(result).to.be.equal(true);
     });
     it('should return `false` if resolver is not registered', async () => {
@@ -250,7 +248,6 @@ describe('FansUnite library', () => {
   });
 
   describe('ResolverRegistry', () => {
-
     it('should successfully add a resolver', async () => {
       await fansunite.resolverRegistry.addResolver(className, pendingResolverAddress, accounts[0]);
       const result = await fansunite.resolverRegistry.isResolverRegistered(className, pendingResolverAddress);
@@ -259,37 +256,54 @@ describe('FansUnite library', () => {
 
     it('should successfully get the list of resolvers', async () => {
       const result = await fansunite.resolverRegistry.getResolvers(className);
-      expect(result).to.be.deep.equal([resolverAddress]);
+      expect(result).to.be.deep.equal([resolvedResolverAddress, unresolvedResolverAddress]);
     });
 
     it('should return `true` if resolver is registered', async () => {
-      const result = await fansunite.resolverRegistry.isResolverRegistered(className, resolverAddress);
+      const result = await fansunite.resolverRegistry.isResolverRegistered(className, resolvedResolverAddress);
       expect(result).to.be.equal(2);
+    });
+  });
+
+  describe('BetManager', () => {
+    before('initialize bettors', async () => {
+      await fansunite.vault.deposit(bet.token, bet.backerStake, backerAddress);
+      await fansunite.vault.deposit(bet.token, (bet.backerStake * odds) - bet.backerStake, layerAddress);
+      await fansunite.vault.approve(betManagerAddress, backerAddress);
+      await fansunite.vault.approve(betManagerAddress, layerAddress);
+    });
+
+    it('should submit a bet', async () => {
+      await fansunite.vault.balanceOf(constants.NULL_ADDRESS, layerAddress);
+      const signedBet = await fansunite.newSignedBet(bet);
+      await fansunite.betManager.submitBet(signedBet, layerAddress, 6000000);
+      const result = await fansunite.betManager.getBetsBySubject(layerAddress);
+      expect(result).to.be.lengthOf(1);
+
+      const betHash = fansunite.hashBet(bet);
+      expect(result).to.be.deep.equal([betHash]);
+    });
+
+    it('should claim a bet', async () => {
+      await migration.pushResolution(1, bet.resolver, '0x0001');
+      // await fansunite.betManager.claimBet(bet, backerAddress, 6000000);
     });
   });
 
   describe('hashBet', () => {
     it('should hash the bet parameters', async () => {
       const betHash = fansunite.hashBet(bet);
-      // TODO
     });
   });
 
   describe('signBet', () => {
     it('should sign the bet', async () => {
-      const signedBet = await fansunite.newSignedBet(bet, layerTokenFillAmount);
+      const signedBet = await fansunite.newSignedBet(bet);
       const betHash = await fansunite.hashBet(bet);
       // TODO
     });
   });
 
-  describe('BetManager', () => {
-    it('should fill a bet', async() => {
-      const signedBet = await fansunite.newSignedBet(bet, layerTokenFillAmount);
-      const betHash = await fansunite.hashBet(bet);
-      // TODO
-    });
-  });
 
   describe('generateNonce', () => {
     // TODO change to generate nonce

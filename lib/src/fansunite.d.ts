@@ -13,10 +13,11 @@ export declare class FansUnite {
     resolverRegistry: ResolverRegistry;
     vault: Vault;
     private web3;
+    private networkId;
     constructor(web3: any, networkId: number);
     hashBet(bet: Bet): any;
     signBet(bet: Bet): Promise<string>;
-    newSignedBet(bet: Bet, layerTokenAmount: number): Promise<NewSignedBet>;
+    newSignedBet(bet: Bet): Promise<NewSignedBet>;
     generateNonce(): number;
     awaitTxMined(txHash: string): Promise<{}>;
 }

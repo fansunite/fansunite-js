@@ -6,10 +6,12 @@
         "baseUrl": "./",
         "lib": ["es2017", "dom"],
         "sourceMap": true,
+        "declaration": true,
         "experimentalDecorators": true,
         "noImplicitReturns": true,
         "pretty": true,
-        "strict": true
+        "strict": true,
+        "noImplicitAny": false
     },
     "include": [
         "./src/**/*",

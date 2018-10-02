@@ -1,5 +1,5 @@
 import { artifacts } from '../artifacts';
-import { NewSignedBet } from '../types';
+import { NewSignedBet, Bet } from '../types';
 import { ContractWrapper } from './contract-wrapper';
 
 export class BetManager extends ContractWrapper {
@@ -7,23 +7,39 @@ export class BetManager extends ContractWrapper {
     super(web3, networkId);
   }
 
-  public async fillBet(newSignedBet: NewSignedBet, layerTokenFillAmount: number, from: string) {
+  public async submitBet(newSignedBet: NewSignedBet, from: string, gas: number) {
     const instance = this._getBetManagerInstance();
     return instance.methods
-      .fillBet(
-        newSignedBet.betAddresses,
-        newSignedBet.betValues,
-        layerTokenFillAmount,
-        newSignedBet.salt,
-        newSignedBet.betPayload,
+      .submitBet(
+        newSignedBet.subjects,
+        newSignedBet.params,
+        newSignedBet.nonce,
+        newSignedBet.payload,
         newSignedBet.signature
       )
-      .send({ from, gas: 6000000 });
+      .send({ from, gas });
   }
 
-  public async filled(betHash: string) {
+  public async claimBet(bet: Bet, from: string, gas: number) {
     const instance = this._getBetManagerInstance();
-    return instance.methods.filled(betHash).call();
+    return instance.methods
+      .claimBet(
+        [ bet.backer, bet.layer, bet.token, bet.league, bet.resolver ],
+        [ bet.backerStake, bet.fixture, bet.odds, bet.expiration ],
+        bet.nonce,
+        bet.payload
+      )
+      .send({ from, gas });
+  }
+
+  public async getResult(league: string, resolver: string, fixture: number, payload: string) {
+    const instance = this._getBetManagerInstance();
+    return instance.methods.getResult(league, resolver, fixture, payload).call();
+  }
+
+  public async getBetsBySubject(subject: string) {
+    const instance = this._getBetManagerInstance();
+    return instance.methods.getBetsBySubject(subject).call();
   }
 
   private _getBetManagerInstance() {

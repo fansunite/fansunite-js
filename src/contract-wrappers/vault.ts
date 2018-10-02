@@ -13,7 +13,13 @@ export class Vault extends ContractWrapper {
 
   public async deposit(token: string, amount: number, from: string) {
     const instance = this._getVaultInstance();
-    return instance.methods.deposit(token, amount).send({ from, value: amount });
+    return instance.methods.deposit(
+      token,
+      token === '0x0000000000000000000000000000000000000000' ? 0 : amount
+    ).send({
+      from,
+      value: token === '0x0000000000000000000000000000000000000000' ? amount : undefined
+    });
   }
 
   public async withdraw(token: string, amount: number, from: string) {
@@ -29,6 +35,11 @@ export class Vault extends ContractWrapper {
   public async isApproved(user: string, spender: string) {
     const instance = this._getVaultInstance();
     return instance.methods.isApproved(user, spender).call();
+  }
+
+  public async isSpender(spender: string) {
+    const instance = this._getVaultInstance();
+    return instance.methods.isSpender(spender).call();
   }
 
   private _getVaultInstance() {

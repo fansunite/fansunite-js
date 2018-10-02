@@ -6,5 +6,6 @@ export declare class Vault extends ContractWrapper {
     withdraw(token: string, amount: number, from: string): Promise<any>;
     balanceOf(token: string, user: string): Promise<any>;
     isApproved(user: string, spender: string): Promise<any>;
+    isSpender(spender: string): Promise<any>;
     private _getVaultInstance;
 }

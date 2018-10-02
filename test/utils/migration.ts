@@ -18,7 +18,8 @@ export class Migration {
   private accounts: string[];
   private owner: string;
   private leagueAddress: string;
-  private resolverAddress: string;
+  private resolvedResolverAddress: string;
+  private unresolvedResolverAddress: string;
   private betManagerAddress: string;
   private gas: number;
   private resolutionPayload: string;
@@ -29,10 +30,11 @@ export class Migration {
     this.networkId = networkId;
     this.accounts = accounts;
     this.owner = accounts[0];
-    this.resolverAddress = accounts[5];
     this.leagueAddress = constants.NULL_ADDRESS;
     this.gas = 6000000;
     this.resolutionPayload = '0x0123';
+    this.resolvedResolverAddress = '';
+    this.unresolvedResolverAddress = '';
 
     const leagueRegistry = LeagueRegistry as any;
     this.leagueRegInstance = new this.web3.eth.Contract(
@@ -77,10 +79,14 @@ export class Migration {
     await this.addParticipant(participants[0]);
     await this.addParticipant(participants[1]);
     await this.scheduleFixture(year, [1,2], eventStartTime);
-    await this.createResolver();
-    await this.registerResolver(className, this.resolverAddress);
 
-    await this.pushResolution(1, this.resolverAddress, this.resolutionPayload);
+    this.resolvedResolverAddress = await this.createResolver() as string;
+    this.unresolvedResolverAddress = await this.createResolver() as string;
+
+    await this.registerResolver(className, this.resolvedResolverAddress);
+    await this.registerResolver(className, this.unresolvedResolverAddress);
+
+    await this.pushResolution(1, this.resolvedResolverAddress, this.resolutionPayload);
     await this.addSpender(this.betManagerAddress);
   }
 
@@ -88,8 +94,12 @@ export class Migration {
     return this.leagueAddress;
   }
 
-  public getResolverAddress(){
-    return this.resolverAddress;
+  public getResolvedResolverAddress(){
+    return this.resolvedResolverAddress;
+  }
+
+  public getUnresolvedResolverAddress(){
+    return this.unresolvedResolverAddress;
   }
 
   public getBetManagerAddress(){
@@ -98,6 +108,10 @@ export class Migration {
 
   public getResolutionPayload(){
     return this.resolutionPayload;
+  }
+
+  public async pushResolution(fixtureId: number, resolverAddress: string, resolutionPayload: string) {
+    await this.leagueInstance.methods.pushResolution(fixtureId, resolverAddress, resolutionPayload).send({from: this.owner, gas: this.gas});
   }
 
   private async createLeague(className: string, leagueName: string) {
@@ -127,9 +141,6 @@ export class Migration {
     await this.leagueInstance.methods.registerResolver(resolverAddress).send({from: this.owner, gas: this.gas});
   }
 
-  private async pushResolution(fixtureId: number, resolverAddress: string, resolutionPayload: string) {
-    await this.leagueInstance.methods.pushResolution(fixtureId, resolverAddress, resolutionPayload).send({from: this.owner, gas: this.gas});
-  }
 
   private async addSpender(address: string) {
     await this.vaultInstance.methods.addSpender(address).send({from: this.owner});
@@ -138,13 +149,12 @@ export class Migration {
   private async createResolver() {
     const rMoneyLine2 = RMoneyLine2 as any;
     const rMoneyline2Contract = new this.web3.eth.Contract(rMoneyLine2.abi);
-    await new Promise( resolve => {
+    return new Promise( (resolve, reject) => {
       rMoneyline2Contract
         .deploy({data: rMoneyLine2.bytecode, arguments: ['0.0.1']})
         .send({from: this.owner, gas: this.gas})
         .on('receipt', receipt => {
-          this.resolverAddress = receipt.contractAddress;
-          resolve();
+          resolve(receipt.contractAddress);
         });
     });
   }

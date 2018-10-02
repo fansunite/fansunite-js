@@ -139,14 +139,25 @@ describe('FansUnite library', () => {
       expect(result).to.be.lengthOf(1);
       expect(Number(result[0])).to.be.equal(fixtureId);
     });
-    it('should return the list of participants for the league', async () => {
-      // TODO: to implement in smart contract as an extension
+    it('should return the number of participants for the league', async () => {
+      const result = await fansunite.league001.getParticipantCount(leagueAddress);
+      expect(result).to.be.equal(2);
     });
     it('should return the participant for the league', async () => {
       const result = await fansunite.league001.getParticipant(leagueAddress, participantId);
       expect(result.id).to.be.equal(participantId);
       expect(result.name).to.be.equal(participants[0]);
-      expect(result.details).to.be.equal(constants.NULL_HASH); // TODO fix
+      expect(result.details).to.be.equal(constants.NULL_HASH);
+    });
+    it('should return the list of participants for the league', async () => {
+      const result = await fansunite.league001.getParticipants(leagueAddress);
+      expect(result).to.be.lengthOf(2);
+      expect(result[0].id).to.be.equal(1);
+      expect(result[0].name).to.be.equal(participants[0]);
+      expect(result[0].details).to.be.equal(constants.NULL_HASH);
+      expect(result[1].id).to.be.equal(2);
+      expect(result[1].name).to.be.equal(participants[1]);
+      expect(result[1].details).to.be.equal(constants.NULL_HASH);
     });
     it('should return a fixture by its id for the league', async () => {
       const result = await fansunite.league001.getFixture(leagueAddress, fixtureId);
@@ -170,6 +181,10 @@ describe('FansUnite library', () => {
     it('should return the resolution for a given fixture id and resolver', async () => {
       const result = await fansunite.league001.getResolution(leagueAddress, fixtureId, resolvedResolverAddress);
       expect(result).to.be.equal(resolutionPayload);
+    });
+    it('should return the fixture start time', async () => {
+      const result = await fansunite.league001.getFixtureStart(leagueAddress, fixtureId);
+      expect(result).to.be.equal(eventStartTime);
     });
     it('should return `true` if resolver is registered', async () => {
       const result = await fansunite.league001.isResolverRegistered(leagueAddress, resolvedResolverAddress);

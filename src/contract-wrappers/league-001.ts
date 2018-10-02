@@ -47,6 +47,12 @@ export class League001 extends ContractWrapper {
     return fixture;
   }
 
+  public async getFixtureStart(leagueAddress: string, id: number) {
+    const instance = this._getLeagueContractInstance(leagueAddress);
+    const result = await instance.methods.getFixtureStart(id).call();
+    return Number(result);
+  }
+
   public async getSeasonWithFixtures(leagueAddress: string, year: number) {
     const fixtureIds = await this.getSeason(leagueAddress, year);
     const fixturePromises = fixtureIds.map(async (id: number) => this.getFixture(leagueAddress, id));
@@ -55,7 +61,16 @@ export class League001 extends ContractWrapper {
   }
 
   public async getParticipants(leagueAddress: string) {
-    // TODO implement in smart contract
+    let participants = Array.apply(null, {length: await this.getParticipantCount(leagueAddress)}).map(Number.call, Number);
+    const participantPromises = participants.map(async(n: number) => this.getParticipant(leagueAddress, n+1));
+    participants = await Promise.all(participantPromises);
+    return participants;
+  }
+
+  public async getParticipantCount(leagueAddress: string) {
+    const instance = this._getLeagueContractInstance(leagueAddress);
+    const count = await instance.methods.getParticipantCount().call();
+    return Number(count);
   }
 
   public async getParticipant(leagueAddress: string, id: number) {

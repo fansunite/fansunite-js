@@ -930,7 +930,7 @@ extsprintf@^1.2.0:
 
 "fansunite-core@https://github.com/fansunite/fansunite-core.git#bet-manager/master":
   version "0.0.0"
-  resolved "https://github.com/fansunite/fansunite-core.git#6493d7f3b8fe30707fa2ce96d5475cdaf45661df"
+  resolved "https://github.com/fansunite/fansunite-core.git#4ceba41e223aca98495d477779e0243b74769e93"
   dependencies:
     bignumber.js "^7.2.1"
     openzeppelin-solidity "1.10.0"

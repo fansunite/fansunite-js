@@ -9,8 +9,10 @@ export declare class League001 extends ContractWrapper {
     getSeasons(leagueAddress: string): Promise<any>;
     getSeason(leagueAddress: string, year: number): Promise<any>;
     getFixture(leagueAddress: string, id: number): Promise<Fixture>;
+    getFixtureStart(leagueAddress: string, id: number): Promise<number>;
     getSeasonWithFixtures(leagueAddress: string, year: number): Promise<[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]>;
-    getParticipants(leagueAddress: string): Promise<void>;
+    getParticipants(leagueAddress: string): Promise<any>;
+    getParticipantCount(leagueAddress: string): Promise<number>;
     getParticipant(leagueAddress: string, id: number): Promise<Participant>;
     getResolvers(leagueAddress: string): Promise<any>;
     getResolution(leagueAddress: string, fixtureId: number, resolver: string): Promise<any>;

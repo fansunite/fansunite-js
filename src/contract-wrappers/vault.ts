@@ -27,9 +27,15 @@ export class Vault extends ContractWrapper {
     return instance.methods.withdraw(token, amount).send({ from });
   }
 
+  public async transfer(token: string, to: string, amount: number, from: string) {
+    const instance = this._getVaultInstance();
+    return instance.methods.transfer(token, to, amount).send({ from });
+  }
+
   public async balanceOf(token: string, user: string) {
     const instance = this._getVaultInstance();
-    return instance.methods.balanceOf(token, user).call();
+    const result = await instance.methods.balanceOf(token, user).call();
+    return Number(result);
   }
 
   public async isApproved(user: string, spender: string) {

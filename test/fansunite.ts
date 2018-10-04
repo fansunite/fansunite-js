@@ -236,14 +236,22 @@ describe('FansUnite library', () => {
       expect(Number(layerBalance)).to.be.equal(2 * 10 ** constants.TOKEN_DECIMALS);
     });
     it('should withdraw tokens', async () => {
-      await fansunite.vault.withdraw(tokenAddress, 1 * 10 ** constants.TOKEN_DECIMALS, backerAddress);
+      await fansunite.vault.withdraw(tokenAddress, 10 ** constants.TOKEN_DECIMALS, backerAddress);
       const backerBalance = await fansunite.vault.balanceOf(tokenAddress, backerAddress);
 
       expect(Number(backerBalance)).to.be.equal(2 * 10 ** constants.TOKEN_DECIMALS);
     });
-    it('should retrieve the balance for token', async () => {
+    it('should transfer tokens from within vault', async () => {
+      const backerBalanceBefore = await fansunite.vault.balanceOf(tokenAddress, backerAddress);
+      const layerBalanceBefore = await fansunite.vault.balanceOf(tokenAddress, layerAddress);
+
+      await fansunite.vault.transfer(tokenAddress, layerAddress,10 ** constants.TOKEN_DECIMALS, backerAddress);
+
       const backerBalance = await fansunite.vault.balanceOf(tokenAddress, backerAddress);
-      expect(Number(backerBalance)).to.be.equal(2 * 10 ** constants.TOKEN_DECIMALS);
+      const layerBalance = await fansunite.vault.balanceOf(tokenAddress, layerAddress);
+
+      expect(backerBalance).to.be.equal(backerBalanceBefore - 10 ** constants.TOKEN_DECIMALS);
+      expect(layerBalance).to.be.equal(layerBalanceBefore + 10 ** constants.TOKEN_DECIMALS);
     });
     it('should return `true` if address has approved spender', async () => {
       const result = await fansunite.vault.isApproved(backerAddress, betManagerAddress);

@@ -43,6 +43,10 @@ export class LeagueRegistry extends ContractWrapper {
     return instance.methods.isClassSupported(className).call();
   }
 
+  public getContractAddress() {
+    return artifacts.LeagueRegistry.networks[this.networkId].address
+  }
+
   private _getLeagueRegistryInstance() {
     return new this.web3.eth.Contract(
       artifacts.LeagueRegistry.abi,

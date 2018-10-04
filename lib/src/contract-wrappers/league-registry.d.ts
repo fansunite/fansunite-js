@@ -7,5 +7,6 @@ export declare class LeagueRegistry extends ContractWrapper {
     getClassWithLeagues(className: string): Promise<League[]>;
     isLeagueRegistered(leagueAddress: string): Promise<any>;
     isClassSupported(className: string): Promise<any>;
+    getContractAddress(): any;
     private _getLeagueRegistryInstance;
 }

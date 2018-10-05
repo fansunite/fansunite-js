@@ -16,8 +16,8 @@ export declare class FansUnite {
     private networkId;
     constructor(web3: any, networkId: number);
     hashBet(bet: Bet): any;
-    signBet(bet: Bet): Promise<string>;
-    newSignedBet(bet: Bet): Promise<NewSignedBet>;
+    signBet(bet: Bet, sigMode: string): Promise<string>;
+    newSignedBet(bet: Bet, sigMode: string): Promise<NewSignedBet>;
     generateNonce(): number;
     awaitTxMined(txHash: string): Promise<{}>;
 }

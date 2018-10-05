@@ -298,7 +298,7 @@ describe('FansUnite library', () => {
 
     it('should submit a bet', async () => {
       await fansunite.vault.balanceOf(constants.NULL_ADDRESS, layerAddress);
-      const signedBet = await fansunite.newSignedBet(bet);
+      const signedBet = await fansunite.newSignedBet(bet, '01');
       await fansunite.betManager.submitBet(signedBet, layerAddress, 6000000);
       const result = await fansunite.betManager.getBetsBySubject(layerAddress);
       expect(result).to.be.lengthOf(1);
@@ -321,7 +321,7 @@ describe('FansUnite library', () => {
 
   describe('signBet', () => {
     it('should sign the bet', async () => {
-      const signedBet = await fansunite.newSignedBet(bet);
+      const signedBet = await fansunite.newSignedBet(bet, '01');
       const betHash = await fansunite.hashBet(bet);
       // TODO
     });

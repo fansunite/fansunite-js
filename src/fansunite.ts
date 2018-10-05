@@ -39,13 +39,13 @@ export class FansUnite {
     return hashBet(bet, this.networkId);
   }
 
-  public async signBet(bet: Bet) {
-    return signBet(this.web3, bet, this.hashBet(bet));
+  public async signBet(bet: Bet, sigMode: string) {
+    return signBet(this.web3, bet, this.hashBet(bet), sigMode);
   }
 
-  public async newSignedBet(bet: Bet) {
+  public async newSignedBet(bet: Bet, sigMode: string) {
     bet.nonce = this.generateNonce();
-    const signature = await this.signBet(bet);
+    const signature = await this.signBet(bet, sigMode);
     return newSignedBet(bet, signature);
   }
 

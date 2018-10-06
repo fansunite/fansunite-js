@@ -18,6 +18,8 @@ export declare class FansUnite {
     hashBet(bet: Bet): any;
     signBet(bet: Bet, sigMode: string): Promise<string>;
     newSignedBet(bet: Bet, sigMode: string): Promise<NewSignedBet>;
+    personalSignBet(bet: Bet, sigMode: string): Promise<string>;
+    newPersonalSignedBet(bet: Bet, sigMode: string): Promise<NewSignedBet>;
     generateNonce(): number;
     awaitTxMined(txHash: string): Promise<{}>;
 }

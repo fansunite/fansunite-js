@@ -9,7 +9,7 @@ import { Bet, NewSignedBet } from './types';
 
 import { generateNonce, newSignedBet } from './utils/bet-utils';
 import { hashBet } from './utils/hash-utils';
-import { signBet } from './utils/signature-utils';
+import { signBet, personalSignBet } from './utils/signature-utils';
 import { awaitTxMined } from './utils/tx-utils';
 
 export class FansUnite {
@@ -46,6 +46,16 @@ export class FansUnite {
   public async newSignedBet(bet: Bet, sigMode: string) {
     bet.nonce = this.generateNonce();
     const signature = await this.signBet(bet, sigMode);
+    return newSignedBet(bet, signature);
+  }
+
+  public async personalSignBet(bet: Bet, sigMode: string) {
+    return personalSignBet(this.web3, bet, this.hashBet(bet), sigMode);
+  }
+
+  public async newPersonalSignedBet(bet: Bet, sigMode: string) {
+    bet.nonce = this.generateNonce();
+    const signature = await this.personalSignBet(bet, sigMode);
     return newSignedBet(bet, signature);
   }
 

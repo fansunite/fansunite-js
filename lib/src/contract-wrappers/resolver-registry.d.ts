@@ -4,5 +4,6 @@ export declare class ResolverRegistry extends ContractWrapper {
     addResolver(className: string, resolver: string, from: string): Promise<any>;
     getResolvers(className: string): Promise<any>;
     isResolverRegistered(className: string, resolver: string): Promise<number>;
+    isResolverUsed(league: string, resolver: string): Promise<any>;
     private _getResolverRegistryInstance;
 }

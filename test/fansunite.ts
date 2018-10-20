@@ -173,11 +173,6 @@ describe('FansUnite library', () => {
       expect(fixture.participants).to.be.deep.equal([1,2]);
       expect(fixture.start).to.be.deep.equal(eventStartTime);
     });
-    it('should return a list of registered resolvers', async () => {
-      const result = await fansunite.league001.getResolvers(leagueAddress);
-      expect(result).to.be.lengthOf(2);
-      expect(result).to.be.deep.equal([resolvedResolverAddress, unresolvedResolverAddress]);
-    });
     it('should return the resolution for a given fixture id and resolver', async () => {
       const result = await fansunite.league001.getResolution(leagueAddress, fixtureId, resolvedResolverAddress);
       expect(result).to.be.equal(resolutionPayload);
@@ -185,14 +180,6 @@ describe('FansUnite library', () => {
     it('should return the fixture start time', async () => {
       const result = await fansunite.league001.getFixtureStart(leagueAddress, fixtureId);
       expect(result).to.be.equal(eventStartTime);
-    });
-    it('should return `true` if resolver is registered', async () => {
-      const result = await fansunite.league001.isResolverRegistered(leagueAddress, resolvedResolverAddress);
-      expect(result).to.be.equal(true);
-    });
-    it('should return `false` if resolver is not registered', async () => {
-      const result = await fansunite.league001.isResolverRegistered(leagueAddress, constants.NULL_ADDRESS);
-      expect(result).to.be.equal(false);
     });
     it('should return `true` if a participant exists', async () => {
       const result = await fansunite.league001.isParticipant(leagueAddress, 1);
@@ -285,6 +272,11 @@ describe('FansUnite library', () => {
     it('should return `true` if resolver is registered', async () => {
       const result = await fansunite.resolverRegistry.isResolverRegistered(className, resolvedResolverAddress);
       expect(result).to.be.equal(2);
+    });
+
+    it('should return `true` if resolver is used', async () => {
+      const result = await fansunite.resolverRegistry.isResolverUsed(leagueAddress, resolvedResolverAddress);
+      expect(result).to.be.equal(true);
     });
   });
 

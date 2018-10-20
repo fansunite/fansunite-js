@@ -22,6 +22,11 @@ export class ResolverRegistry extends ContractWrapper {
     return Number(isResolverRegistered);
   }
 
+  public async isResolverUsed(league: string, resolver: string) {
+    const instance = this._getResolverRegistryInstance();
+    return await instance.methods.isResolverUsed(league, resolver).call();
+  }
+
   private _getResolverRegistryInstance() {
     return new this.web3.eth.Contract(artifacts.ResolverRegistry.abi, artifacts.ResolverRegistry.networks[this.networkId].address);
   }

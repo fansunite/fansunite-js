@@ -14,10 +14,8 @@ export declare class League001 extends ContractWrapper {
     getParticipants(leagueAddress: string): Promise<any>;
     getParticipantCount(leagueAddress: string): Promise<number>;
     getParticipant(leagueAddress: string, id: number): Promise<Participant>;
-    getResolvers(leagueAddress: string): Promise<any>;
     getResolution(leagueAddress: string, fixtureId: number, resolver: string): Promise<any>;
     isParticipant(leagueAddress: string, id: number): Promise<any>;
-    isResolverRegistered(leagueAddress: string, resolverAddress: string): Promise<any>;
     isFixtureScheduled(leagueAddress: string, fixtureId: number): Promise<any>;
     private _getLeagueContractInstance;
 }

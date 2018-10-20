@@ -4,20 +4,6 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "getVersion",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
       "name": "getName",
       "outputs": [
         {
@@ -95,10 +81,24 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "isOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
-          "name": "_newOwner",
+          "name": "newOwner",
           "type": "address"
         }
       ],
@@ -133,10 +133,6 @@
           "type": "string"
         },
         {
-          "name": "_version",
-          "type": "string"
-        },
-        {
           "name": "_registry",
           "type": "address"
         },
@@ -148,18 +144,6 @@
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_resolver",
-          "type": "address"
-        }
-      ],
-      "name": "LogResolverRegistered",
-      "type": "event"
     },
     {
       "anonymous": false,
@@ -252,21 +236,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_resolver",
-          "type": "address"
-        }
-      ],
-      "name": "registerResolver",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_fixtureId",
+          "name": "_fixture",
           "type": "uint256"
         },
         {
@@ -342,7 +312,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_fixtureId",
+          "name": "_fixture",
           "type": "uint256"
         },
         {
@@ -355,20 +325,6 @@
         {
           "name": "",
           "type": "bytes"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getResolvers",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address[]"
         }
       ],
       "payable": false,
@@ -503,26 +459,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_resolver",
-          "type": "address"
-        }
-      ],
-      "name": "isResolverRegistered",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_id",
+          "name": "_fixture",
           "type": "uint256"
         }
       ],
@@ -541,7 +478,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_id",
+          "name": "_fixture",
           "type": "uint256"
         },
         {
@@ -564,7 +501,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_id",
+          "name": "_participant",
           "type": "uint256"
         }
       ],
@@ -583,11 +520,11 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_participantId",
+          "name": "_participant",
           "type": "uint256"
         },
         {
-          "name": "_fixtureId",
+          "name": "_fixture",
           "type": "uint256"
         }
       ],
@@ -596,6 +533,20 @@
         {
           "name": "",
           "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getVersion",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
         }
       ],
       "payable": false,

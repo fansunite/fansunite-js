@@ -42,6 +42,6 @@
   "dependencies": {
     "bignumber.js": "^7.2.1",
     "fansunite-core": "https://github.com/fansunite/fansunite-core.git#development",
-    "web3": "^1.0.0-beta.35"
+    "web3": "1.0.0-beta.35"
   }
 }

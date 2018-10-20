@@ -39,10 +39,24 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "isOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
-          "name": "_newOwner",
+          "name": "newOwner",
           "type": "address"
         }
       ],
@@ -112,6 +126,23 @@
         }
       ],
       "name": "LogResolverRejected",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "_league",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "_resolver",
+          "type": "address"
+        }
+      ],
+      "name": "LogResolverUsed",
       "type": "event"
     },
     {
@@ -219,8 +250,8 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_class",
-          "type": "string"
+          "name": "_league",
+          "type": "address"
         },
         {
           "name": "_resolver",
@@ -228,12 +259,7 @@
         }
       ],
       "name": "useResolver",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
+      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
@@ -274,6 +300,29 @@
         {
           "name": "",
           "type": "uint8"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_league",
+          "type": "address"
+        },
+        {
+          "name": "_resolver",
+          "type": "address"
+        }
+      ],
+      "name": "isResolverUsed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
         }
       ],
       "payable": false,

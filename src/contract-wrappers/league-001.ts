@@ -84,11 +84,6 @@ export class League001 extends ContractWrapper {
     return participant;
   }
 
-  public async getResolvers(leagueAddress: string) {
-    const instance = this._getLeagueContractInstance(leagueAddress);
-    return instance.methods.getResolvers().call();
-  }
-
   public async getResolution(leagueAddress: string, fixtureId: number, resolver: string) {
     const instance = this._getLeagueContractInstance(leagueAddress);
     return instance.methods.getResolution(fixtureId, resolver).call();
@@ -97,11 +92,6 @@ export class League001 extends ContractWrapper {
   public async isParticipant(leagueAddress: string, id: number) {
     const instance = this._getLeagueContractInstance(leagueAddress);
     return instance.methods.isParticipant(id).call();
-  }
-
-  public async isResolverRegistered(leagueAddress: string, resolverAddress: string) {
-    const instance = this._getLeagueContractInstance(leagueAddress);
-    return instance.methods.isResolverRegistered(resolverAddress).call();
   }
 
   public async isFixtureScheduled(leagueAddress: string, fixtureId: number) {

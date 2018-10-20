@@ -138,7 +138,7 @@ export class Migration {
   private async registerResolver(className: string, resolverAddress: string) {
     await this.resolverRegistryInstance.methods.addResolver(className, resolverAddress).send({from: this.owner});
     await this.resolverRegistryInstance.methods.registerResolver(className, resolverAddress).send({from: this.owner, gas: this.gas});
-    await this.leagueInstance.methods.registerResolver(resolverAddress).send({from: this.owner, gas: this.gas});
+    await this.resolverRegistryInstance.methods.useResolver(this.leagueAddress, resolverAddress).send({from: this.owner, gas: this.gas});
   }
 
 

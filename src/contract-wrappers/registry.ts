@@ -11,6 +11,10 @@ export class Registry extends ContractWrapper {
     return instance.methods.getAddress(nameKey).call();
   }
 
+  public async getContractAddress() {
+    return artifacts.Registry.networks[this.networkId].address;
+  }
+
   private _getRegistryInstance() {
     return new this.web3.eth.Contract(
       artifacts.Registry.abi,

@@ -24,7 +24,11 @@ export class ResolverRegistry extends ContractWrapper {
 
   public async isResolverUsed(league: string, resolver: string) {
     const instance = this._getResolverRegistryInstance();
-    return await instance.methods.isResolverUsed(league, resolver).call();
+    return instance.methods.isResolverUsed(league, resolver).call();
+  }
+
+  public async getContractAddress() {
+    return artifacts.ResolverRegistry.networks[this.networkId].address;
   }
 
   private _getResolverRegistryInstance() {

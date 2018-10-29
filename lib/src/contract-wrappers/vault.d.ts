@@ -8,5 +8,6 @@ export declare class Vault extends ContractWrapper {
     balanceOf(token: string, user: string): Promise<number>;
     isApproved(user: string, spender: string): Promise<any>;
     isSpender(spender: string): Promise<any>;
+    getContractAddress(): Promise<any>;
     private _getVaultInstance;
 }

@@ -42,6 +42,10 @@ export class BetManager extends ContractWrapper {
     return instance.methods.getBetsBySubject(subject).call();
   }
 
+  public async getContractAddress() {
+    return artifacts.BetManager.networks[this.networkId].address;
+  }
+
   private _getBetManagerInstance() {
     return new this.web3.eth.Contract(artifacts.BetManager.abi, artifacts.BetManager.networks[this.networkId].address);
   }

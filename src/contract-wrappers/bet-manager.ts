@@ -42,7 +42,7 @@ export class BetManager extends ContractWrapper {
     return instance.methods.getBetsBySubject(subject).call();
   }
 
-  public async getContractAddress() {
+  public getContractAddress() {
     return artifacts.BetManager.networks[this.networkId].address;
   }
 

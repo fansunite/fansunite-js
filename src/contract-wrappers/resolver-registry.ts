@@ -27,7 +27,7 @@ export class ResolverRegistry extends ContractWrapper {
     return instance.methods.isResolverUsed(league, resolver).call();
   }
 
-  public async getContractAddress() {
+  public getContractAddress() {
     return artifacts.ResolverRegistry.networks[this.networkId].address;
   }
 

@@ -48,7 +48,7 @@ export class Vault extends ContractWrapper {
     return instance.methods.isSpender(spender).call();
   }
 
-  public async getContractAddress() {
+  public getContractAddress() {
     return artifacts.Vault.networks[this.networkId].address;
   }
 

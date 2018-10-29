@@ -11,7 +11,7 @@ export class Registry extends ContractWrapper {
     return instance.methods.getAddress(nameKey).call();
   }
 
-  public async getContractAddress() {
+  public getContractAddress() {
     return artifacts.Registry.networks[this.networkId].address;
   }
 

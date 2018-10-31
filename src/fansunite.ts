@@ -1,3 +1,4 @@
+import BN = require('bn.js');
 import { BetManager } from './contract-wrappers/bet-manager';
 import { League001 } from './contract-wrappers/league-001';
 import { LeagueRegistry } from './contract-wrappers/league-registry';

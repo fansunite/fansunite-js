@@ -1,3 +1,4 @@
+import BN = require('bn.js');
 import { artifacts } from '../artifacts';
 import { ContractWrapper } from './contract-wrapper';
 
@@ -9,20 +10,20 @@ export class FanToken extends ContractWrapper {
   public async balanceOf(user: string) {
     const instance = this._getFanTokenInstance();
     const result = await instance.methods.balanceOf(user).call();
-    return result;
+    return new BN(result);
   }
 
-  public async approve(spender: string, amount: number, from: string) {
+  public async approve(spender: string, amount: BN, from: string) {
     const instance = this._getFanTokenInstance();
     return instance.methods.approve(spender, amount).send({ from });
   }
 
-  public async increaseAllowance(spender: string, amount: number, from: string) {
+  public async increaseAllowance(spender: string, amount: BN, from: string) {
     const instance = this._getFanTokenInstance();
     return instance.methods.increaseAllowance(spender, amount).send({ from });
   }
 
-  public async decreaseAllowance(spender: string, amount: number, from: string) {
+  public async decreaseAllowance(spender: string, amount: BN, from: string) {
     const instance = this._getFanTokenInstance();
     return instance.methods.decreaseAllowance(spender, amount).send({ from });
   }

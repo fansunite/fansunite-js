@@ -1,3 +1,4 @@
+import BN = require('bn.js');
 import { expect } from 'chai';
 import 'mocha';
 import Web3 = require('web3');
@@ -17,10 +18,10 @@ const participants = [
   'Leicester City',
   'Manchester United'
 ];
-const year = 2018;
-const fixtureId = 1;
-const participantId = 1;
-const eventStartTime = 1545437384;
+const year = new BN(2018);
+const fixtureId = new BN(1);
+const participantId = new BN(1);
+const eventStartTime = new BN(1545437384);
 
 let leagueAddress: string;
 let resolvedResolverAddress: string;
@@ -31,7 +32,9 @@ let nonApprovedAddress: string;
 let pendingResolverAddress: string;
 let layerAddress: string;
 const tokenAddress = constants.NULL_ADDRESS; // ETH Token
-const odds = 2;
+const odds = new BN(2);
+
+const tokenMultiple = new BN(10).pow(new BN(constants.TOKEN_DECIMALS));
 
 let resolutionPayload: string;
 
@@ -74,12 +77,12 @@ describe('FansUnite library', () => {
       token: constants.NULL_ADDRESS,
       league: leagueAddress,
       resolver: unresolvedResolverAddress,
-      backerStake: 2 * 10 ** constants.TOKEN_DECIMALS,
+      backerStake: new BN(2).pow(new BN(constants.TOKEN_DECIMALS)),
       fixture: fixtureId,
-      odds: odds * 10 ** constants.ODDS_DECIMALS,
-      expiration: 1893456000,
+      odds: odds.pow(new BN(constants.ODDS_DECIMALS)),
+      expiration: new BN(1893456000),
       payload: '0x4e5ef893',
-      nonce: 1
+      nonce: new BN(1)
     };
   });
 
@@ -132,12 +135,12 @@ describe('FansUnite library', () => {
     it('should return the list of seasons for the league', async () => {
       const result = await fansunite.league001.getSeasons(leagueAddress);
       expect(result).to.be.lengthOf(1);
-      expect(Number(result[0])).to.be.equal(year);
+      expect(Number(result[0])).to.be.equal(year.toNumber());
     });
     it('should return the list of fixtures for the season for the league', async () => {
       const result = await fansunite.league001.getSeason(leagueAddress, year);
       expect(result).to.be.lengthOf(1);
-      expect(Number(result[0])).to.be.equal(fixtureId);
+      expect(Number(result[0])).to.be.equal(fixtureId.toNumber());
     });
     it('should return the number of participants for the league', async () => {
       const result = await fansunite.league001.getParticipantCount(leagueAddress);
@@ -145,33 +148,33 @@ describe('FansUnite library', () => {
     });
     it('should return the participant for the league', async () => {
       const result = await fansunite.league001.getParticipant(leagueAddress, participantId);
-      expect(result.id).to.be.equal(participantId);
+      expect(Number(result.id)).to.be.equal(participantId.toNumber());
       expect(result.name).to.be.equal(participants[0]);
       expect(result.details).to.be.equal(constants.NULL_HASH);
     });
     it('should return the list of participants for the league', async () => {
       const result = await fansunite.league001.getParticipants(leagueAddress);
       expect(result).to.be.lengthOf(2);
-      expect(result[0].id).to.be.equal(1);
+      expect(result[0].id.toNumber()).to.be.equal(1);
       expect(result[0].name).to.be.equal(participants[0]);
       expect(result[0].details).to.be.equal(constants.NULL_HASH);
-      expect(result[1].id).to.be.equal(2);
+      expect(result[1].id.toNumber()).to.be.equal(2);
       expect(result[1].name).to.be.equal(participants[1]);
       expect(result[1].details).to.be.equal(constants.NULL_HASH);
     });
     it('should return a fixture by its id for the league', async () => {
       const result = await fansunite.league001.getFixture(leagueAddress, fixtureId);
-      expect(result.id).to.be.equal(fixtureId);
+      expect(result.id.toNumber()).to.be.equal(fixtureId.toNumber());
       expect(result.participants).to.be.deep.equal([1,2]);
-      expect(result.start).to.be.deep.equal(eventStartTime);
+      expect(result.start).to.be.deep.equal(eventStartTime.toNumber());
     });
     it('should return a list of fixtures populated for the season', async () => {
       const result = await fansunite.league001.getSeasonWithFixtures(leagueAddress, year);
       expect(result).to.be.lengthOf(1);
       const fixture: Fixture = result[0] as Fixture;
-      expect(fixture.id).to.be.equal(fixtureId);
+      expect(fixture.id.toNumber()).to.be.equal(fixtureId.toNumber());
       expect(fixture.participants).to.be.deep.equal([1,2]);
-      expect(fixture.start).to.be.deep.equal(eventStartTime);
+      expect(fixture.start).to.be.deep.equal(eventStartTime.toNumber());
     });
     it('should return the resolution for a given fixture id and resolver', async () => {
       const result = await fansunite.league001.getResolution(leagueAddress, fixtureId, resolvedResolverAddress);
@@ -179,14 +182,14 @@ describe('FansUnite library', () => {
     });
     it('should return the fixture start time', async () => {
       const result = await fansunite.league001.getFixtureStart(leagueAddress, fixtureId);
-      expect(result).to.be.equal(eventStartTime);
+      expect(result).to.be.equal(eventStartTime.toNumber());
     });
     it('should return `true` if a participant exists', async () => {
-      const result = await fansunite.league001.isParticipant(leagueAddress, 1);
+      const result = await fansunite.league001.isParticipant(leagueAddress, new BN(1));
       expect(result).to.be.equal(true);
     });
     it('should return `false` if a participant does not exists', async () => {
-      const result = await fansunite.league001.isParticipant(leagueAddress, 100);
+      const result = await fansunite.league001.isParticipant(leagueAddress, new BN(100));
       expect(result).to.be.equal(false);
     });
     it('should return `true` if fixture is scheduled', async () => {
@@ -194,7 +197,7 @@ describe('FansUnite library', () => {
       expect(result).to.be.equal(true);
     });
     it('should return `false` if fixture is not scheduled', async () => {
-      const result = await fansunite.league001.isFixtureScheduled(leagueAddress, 2);
+      const result = await fansunite.league001.isFixtureScheduled(leagueAddress, new BN(2));
       expect(result).to.be.equal(false);
     });
   });
@@ -213,32 +216,32 @@ describe('FansUnite library', () => {
       expect(notApproved).to.be.equal(false);
     });
     it('should deposit tokens', async () => {
-      await fansunite.vault.deposit(tokenAddress, 3 * 10 ** constants.TOKEN_DECIMALS, backerAddress);
-      await fansunite.vault.deposit(tokenAddress, 2 * 10 ** constants.TOKEN_DECIMALS, layerAddress);
+      await fansunite.vault.deposit(tokenAddress, new BN(3).mul(tokenMultiple), backerAddress);
+      await fansunite.vault.deposit(tokenAddress, new BN(2).mul(tokenMultiple), layerAddress);
 
       const backerBalance = await fansunite.vault.balanceOf(tokenAddress, backerAddress);
       const layerBalance = await fansunite.vault.balanceOf(tokenAddress, layerAddress);
 
-      expect(Number(backerBalance)).to.be.equal(3 * 10 ** constants.TOKEN_DECIMALS);
-      expect(Number(layerBalance)).to.be.equal(2 * 10 ** constants.TOKEN_DECIMALS);
+      expect(backerBalance.toString()).to.be.equal(new BN(3).mul(tokenMultiple).toString());
+      expect(layerBalance.toString()).to.be.equal(new BN(2).mul(tokenMultiple).toString());
     });
     it('should withdraw tokens', async () => {
-      await fansunite.vault.withdraw(tokenAddress, 10 ** constants.TOKEN_DECIMALS, backerAddress);
+      await fansunite.vault.withdraw(tokenAddress, new BN(1).mul(tokenMultiple), backerAddress);
       const backerBalance = await fansunite.vault.balanceOf(tokenAddress, backerAddress);
 
-      expect(Number(backerBalance)).to.be.equal(2 * 10 ** constants.TOKEN_DECIMALS);
+      expect(backerBalance.toString()).to.be.equal(new BN(2).mul(tokenMultiple).toString());
     });
     it('should transfer tokens from within vault', async () => {
       const backerBalanceBefore = await fansunite.vault.balanceOf(tokenAddress, backerAddress);
       const layerBalanceBefore = await fansunite.vault.balanceOf(tokenAddress, layerAddress);
 
-      await fansunite.vault.transfer(tokenAddress, layerAddress,10 ** constants.TOKEN_DECIMALS, backerAddress);
+      await fansunite.vault.transfer(tokenAddress, layerAddress, new BN(1).mul(tokenMultiple), backerAddress);
 
       const backerBalance = await fansunite.vault.balanceOf(tokenAddress, backerAddress);
       const layerBalance = await fansunite.vault.balanceOf(tokenAddress, layerAddress);
 
-      expect(backerBalance).to.be.equal(backerBalanceBefore - 10 ** constants.TOKEN_DECIMALS);
-      expect(layerBalance).to.be.equal(layerBalanceBefore + 10 ** constants.TOKEN_DECIMALS);
+      expect(backerBalance.toString()).to.be.equal(backerBalanceBefore.sub(new BN(1).mul(tokenMultiple)).toString());
+      expect(layerBalance.toString()).to.be.equal(layerBalanceBefore.add(new BN(1).mul(tokenMultiple)).toString());
     });
     it('should return `true` if address has approved spender', async () => {
       const result = await fansunite.vault.isApproved(backerAddress, betManagerAddress);
@@ -283,7 +286,7 @@ describe('FansUnite library', () => {
   describe('BetManager', () => {
     before('initialize bettors', async () => {
       await fansunite.vault.deposit(bet.token, bet.backerStake, backerAddress);
-      await fansunite.vault.deposit(bet.token, (bet.backerStake * odds) - bet.backerStake, layerAddress);
+      await fansunite.vault.deposit(bet.token, bet.backerStake.mul(odds).sub(bet.backerStake), layerAddress);
       await fansunite.vault.approve(betManagerAddress, backerAddress);
       await fansunite.vault.approve(betManagerAddress, layerAddress);
     });

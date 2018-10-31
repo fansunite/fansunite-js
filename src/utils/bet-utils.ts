@@ -1,7 +1,5 @@
-import { BigNumber } from 'bignumber.js';
+import BN = require('bn.js');
 import { Bet, NewSignedBet } from '../types';
-
-BigNumber.set({ DECIMAL_PLACES: 78 });
 
 export async function newSignedBet(bet: Bet, signature: string) {
   const newBet: NewSignedBet = {
@@ -26,11 +24,7 @@ export async function newSignedBet(bet: Bet, signature: string) {
 }
 
 export function generateNonce() {
-  const randomNumber = BigNumber.random(9);
-  const factor = new BigNumber(10).pow(9 - 1);
-  const salt = randomNumber
-    .times(factor)
-    .decimalPlaces(0)
-    .toNumber();
-  return salt;
+  const randomNumber = Math.floor((Math.random() * 10 **  9) + 1);
+  const nonce = new BN(randomNumber);
+  return nonce;
 }

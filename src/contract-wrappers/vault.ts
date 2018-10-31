@@ -1,3 +1,4 @@
+import BN = require('bn.js');
 import { artifacts } from '../artifacts';
 import { ContractWrapper } from './contract-wrapper';
 
@@ -11,7 +12,7 @@ export class Vault extends ContractWrapper {
     return instance.methods.approve(spender).send({ from });
   }
 
-  public async deposit(token: string, amount: number, from: string) {
+  public async deposit(token: string, amount: BN, from: string) {
     const instance = this._getVaultInstance();
     return instance.methods.deposit(
       token,
@@ -22,12 +23,12 @@ export class Vault extends ContractWrapper {
     });
   }
 
-  public async withdraw(token: string, amount: number, from: string) {
+  public async withdraw(token: string, amount: BN, from: string) {
     const instance = this._getVaultInstance();
     return instance.methods.withdraw(token, amount).send({ from });
   }
 
-  public async transfer(token: string, to: string, amount: number, from: string) {
+  public async transfer(token: string, to: string, amount: BN, from: string) {
     const instance = this._getVaultInstance();
     return instance.methods.transfer(token, to, amount).send({ from });
   }
@@ -35,7 +36,7 @@ export class Vault extends ContractWrapper {
   public async balanceOf(token: string, user: string) {
     const instance = this._getVaultInstance();
     const result = await instance.methods.balanceOf(token, user).call();
-    return Number(result);
+    return new BN(result);
   }
 
   public async isApproved(user: string, spender: string) {

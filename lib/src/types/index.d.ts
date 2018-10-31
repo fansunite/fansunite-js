@@ -1,15 +1,16 @@
+import BN = require('bn.js');
 export interface League {
     address: string;
     name: string;
     details: string;
 }
 export interface Participant {
-    id: number;
+    id: BN;
     name: string;
     details: string;
 }
 export interface Fixture {
-    id: number;
+    id: BN;
     participants: number[];
     start: number;
 }
@@ -19,17 +20,17 @@ export interface Bet {
     token: string;
     league: string;
     resolver: string;
-    backerStake: number;
-    fixture: number;
-    odds: number;
-    expiration: number;
-    nonce: number;
+    backerStake: BN;
+    fixture: BN;
+    odds: BN;
+    expiration: BN;
+    nonce: BN;
     payload: string;
 }
 export interface NewSignedBet {
     subjects: string[];
-    params: number[];
-    nonce: number;
+    params: BN[];
+    nonce: BN;
     payload: string;
     signature: string;
 }

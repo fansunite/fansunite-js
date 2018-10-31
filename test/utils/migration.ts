@@ -1,3 +1,4 @@
+import BN = require('bn.js');
 import Web3 = require('web3');
 import * as BetManager from '../../src/artifacts/BetManager.json';
 import * as League001 from '../../src/artifacts/League001.json';
@@ -63,8 +64,8 @@ export class Migration {
     participantsPerFixture: number,
     leagueName: string,
     participants: string[],
-    year: number,
-    eventStartTime: number
+    year: BN,
+    eventStartTime: BN
   ) {
     await this.createClass(className, participantsPerFixture);
     await this.createLeague(className, leagueName);
@@ -123,7 +124,7 @@ export class Migration {
     await this.leagueRegInstance.methods.createClass(className, participantsPerFixture).send({from: this.owner, gas: this.gas});
   }
 
-  private async addSeason(year: number) {
+  private async addSeason(year: BN) {
     await this.leagueInstance.methods.addSeason(year).send( {from: this.owner});
   }
 
@@ -131,7 +132,7 @@ export class Migration {
     await this.leagueInstance.methods.addParticipant(participantName, constants.NULL_HASH).send( {from: this.owner, gas: this.gas});
   }
 
-  private async scheduleFixture(season: number, participants: number[], startTime: number) {
+  private async scheduleFixture(season: BN, participants: number[], startTime: BN) {
     await this.leagueInstance.methods.scheduleFixture(season, participants, startTime).send( {from: this.owner, gas: this.gas});
   }
 

@@ -333,6 +333,9 @@
   "networks": {
     "15": {
       "address": "0xbe0037eaf2d64fe5529bca93c18c9702d3930376"
+    },
+    "42": {
+      "address": "0xb3c3cd7831aa7c3c74a6d8101bc31d823c681b04"
     }
   }
 }

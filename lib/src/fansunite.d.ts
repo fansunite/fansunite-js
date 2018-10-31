@@ -1,3 +1,4 @@
+import BN = require('bn.js');
 import { BetManager } from './contract-wrappers/bet-manager';
 import { League001 } from './contract-wrappers/league-001';
 import { LeagueRegistry } from './contract-wrappers/league-registry';
@@ -17,9 +18,11 @@ export declare class FansUnite {
     constructor(web3: any, networkId: number);
     hashBet(bet: Bet): any;
     signBet(bet: Bet, sigMode: string): Promise<string>;
-    newSignedBet(bet: Bet, sigMode: string): Promise<NewSignedBet>;
     personalSignBet(bet: Bet, sigMode: string): Promise<string>;
+    typedDataSignBet(bet: Bet, domainName: string, domainVersion: string): Promise<string>;
+    newSignedBet(bet: Bet, sigMode: string): Promise<NewSignedBet>;
     newPersonalSignedBet(bet: Bet, sigMode: string): Promise<NewSignedBet>;
-    generateNonce(): number;
+    newTypedDataSignBet(bet: Bet, domainName: string, domainVersion: string): Promise<NewSignedBet>;
+    generateNonce(): BN;
     awaitTxMined(txHash: string): Promise<{}>;
 }

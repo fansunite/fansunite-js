@@ -1,5 +1,6 @@
 import BN = require('bn.js');
 import { BetManager } from './contract-wrappers/bet-manager';
+import { FanToken } from './contract-wrappers/fan-token';
 import { League001 } from './contract-wrappers/league-001';
 import { LeagueRegistry } from './contract-wrappers/league-registry';
 import { Registry } from './contract-wrappers/registry';
@@ -15,6 +16,7 @@ import { awaitTxMined } from './utils/tx-utils';
 
 export class FansUnite {
   public betManager: BetManager;
+  public fanToken: FanToken;
   public league001: League001;
   public leagueRegistry: LeagueRegistry;
   public registry: Registry;
@@ -29,6 +31,7 @@ export class FansUnite {
     this.networkId = networkId;
 
     this.betManager = new BetManager(web3, networkId);
+    this.fanToken = new FanToken(web3, networkId);
     this.league001 = new League001(web3, networkId);
     this.leagueRegistry = new LeagueRegistry(web3, networkId);
     this.registry = new Registry(web3, networkId);

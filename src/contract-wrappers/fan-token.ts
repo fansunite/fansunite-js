@@ -13,6 +13,12 @@ export class FanToken extends ContractWrapper {
     return new BN(result);
   }
 
+  public async allowance(user: string, spender: string) {
+    const instance = this._getFanTokenInstance();
+    const result = await instance.methods.allowance(user, spender).call();
+    return new BN(result);
+  }
+
   public async approve(spender: string, amount: BN, from: string) {
     const instance = this._getFanTokenInstance();
     return instance.methods.approve(spender, amount).send({ from });

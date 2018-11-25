@@ -18,13 +18,9 @@ export declare class FansUnite {
     private web3;
     private networkId;
     constructor(web3: any, networkId: number);
-    hashBet(bet: Bet): any;
-    signBet(bet: Bet, sigMode: string): Promise<string>;
-    personalSignBet(bet: Bet, sigMode: string): Promise<string>;
-    typedDataSignBet(bet: Bet, domainName: string, domainVersion: string): Promise<string>;
-    newSignedBet(bet: Bet, sigMode: string): Promise<NewSignedBet>;
-    newPersonalSignedBet(bet: Bet, sigMode: string): Promise<NewSignedBet>;
-    newTypedDataSignBet(bet: Bet, domainName: string, domainVersion: string): Promise<NewSignedBet>;
+    hashBet(bet: Bet): string;
+    typedDataSignBet(bet: Bet): Promise<string>;
+    newTypedDataSignBet(bet: Bet): Promise<NewSignedBet>;
     generateNonce(): BN;
     awaitTxMined(txHash: string): Promise<{}>;
 }

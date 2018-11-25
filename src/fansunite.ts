@@ -11,7 +11,7 @@ import { Bet, NewSignedBet } from './types';
 
 import { generateNonce, newSignedBet } from './utils/bet-utils';
 import { hashBet } from './utils/hash-utils';
-import { personalSignBet, signBet, typedDataSignBet } from './utils/signature-utils';
+import { typedDataSignBet } from './utils/signature-utils';
 import { awaitTxMined } from './utils/tx-utils';
 
 export class FansUnite {
@@ -40,38 +40,16 @@ export class FansUnite {
   }
 
   public hashBet(bet: Bet) {
-    return hashBet(bet, this.networkId);
+    return hashBet(bet, this.networkId, this.betManager.getContractAddress());
   }
 
-
-  public async signBet(bet: Bet, sigMode: string) {
-    return signBet(this.web3, bet, this.hashBet(bet), sigMode);
+  public async typedDataSignBet(bet: Bet) {
+    return typedDataSignBet(this.web3, bet, this.betManager.getContractAddress());
   }
 
-  public async personalSignBet(bet: Bet, sigMode: string) {
-    return personalSignBet(this.web3, bet, this.hashBet(bet), sigMode);
-  }
-
-  public async typedDataSignBet(bet: Bet, domainName: string, domainVersion: string) {
-    return typedDataSignBet(this.web3, bet, domainName, domainVersion, this.betManager.getContractAddress());
-  }
-
-
-  public async newSignedBet(bet: Bet, sigMode: string) {
+  public async newTypedDataSignBet(bet: Bet) {
     bet.nonce = this.generateNonce();
-    const signature = await this.signBet(bet, sigMode);
-    return newSignedBet(bet, signature);
-  }
-
-  public async newPersonalSignedBet(bet: Bet, sigMode: string) {
-    bet.nonce = this.generateNonce();
-    const signature = await this.personalSignBet(bet, sigMode);
-    return newSignedBet(bet, signature);
-  }
-
-  public async newTypedDataSignBet(bet: Bet, domainName: string, domainVersion: string) {
-    bet.nonce = this.generateNonce();
-    const signature = await this.typedDataSignBet(bet, domainName, domainVersion);
+    const signature = await this.typedDataSignBet(bet);
     return newSignedBet(bet, signature);
   }
 

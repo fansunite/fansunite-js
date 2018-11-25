@@ -48,7 +48,7 @@ export async function typedDataSignBet(
     payload: bet.payload
   };
 
-  const data = {
+  const data = JSON.stringify({
     types: {
       EIP712Domain: eip712Domain,
       Bet: eip712Bet
@@ -56,7 +56,7 @@ export async function typedDataSignBet(
     domain: domainData,
     primaryType: 'Bet',
     message
-  };
+  });
 
   return signTypedDataV3(web3, bet, data);
 }
@@ -65,7 +65,7 @@ async function signTypedDataV3(web3: any, bet, data) {
   const sigResult: any = await new Promise((resolve, reject) => {
     web3.currentProvider.send(
       {
-        method: 'eth_signTypedData',
+        method: 'eth_signTypedData_v3',
         params: [bet.backer, data],
         from: bet.backer
       }, (err, result) => {

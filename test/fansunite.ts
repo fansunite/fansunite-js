@@ -293,7 +293,7 @@ describe('FansUnite library', () => {
 
     it('should submit a bet', async () => {
       await fansunite.vault.balanceOf(constants.NULL_ADDRESS, layerAddress);
-      const signedBet = await fansunite.newSignedBet(bet, '01');
+      const signedBet = await fansunite.newTypedDataSignBet(bet);
       await fansunite.betManager.submitBet(signedBet, layerAddress, 6000000);
       const result = await fansunite.betManager.getBetsBySubject(layerAddress);
       expect(result).to.be.lengthOf(1);
@@ -305,18 +305,20 @@ describe('FansUnite library', () => {
     it('should claim a bet', async () => {
       await migration.pushResolution(1, bet.resolver, '0x0001');
       // await fansunite.betManager.claimBet(bet, backerAddress, 6000000);
+      // TODO
     });
   });
 
   describe('hashBet', () => {
     it('should hash the bet parameters', async () => {
       const betHash = fansunite.hashBet(bet);
+      // TODO
     });
   });
 
   describe('signBet', () => {
     it('should sign the bet', async () => {
-      const signedBet = await fansunite.newSignedBet(bet, '01');
+      const signedBet = await fansunite.newTypedDataSignBet(bet);
       const betHash = await fansunite.hashBet(bet);
       // TODO
     });

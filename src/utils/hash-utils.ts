@@ -1,40 +1,57 @@
-import Web3 = require('web3');
+import { TypedDataUtils } from 'eth-sig-util';
 
 import { Bet } from '../types';
 
-export function hashBet(bet: Bet, networkId: number) {
-  const schema = [
-    'Bet(',
-    'address backer,',
-    'address layer,',
-    'address token,',
-    'address league,',
-    'address resolver,',
-    'uint256 backerStake,',
-    'uint256 fixture,',
-    'uint256 odds,',
-    'uint256 expiration,',
-    'bytes payload',
-    ')'
+export function hashBet(bet: Bet, networkId: number, betManagerAddress: string) {
+  const eip712Domain = [
+    { name: 'name', type: 'string' },
+    { name: 'chainId', type: 'uint256' },
+    { name: 'verifyingContract', type: 'address' }
   ];
 
-  const subjects = [
-    bet.backer,
-    bet.layer,
-    bet.token,
-    bet.league,
-    bet.resolver
+  const eip712Bet = [
+    { name: 'backer', type: 'address' },
+    { name: 'layer', type: 'address' },
+    { name: 'token', type: 'address' },
+    { name: 'league', type: 'address' },
+    { name: 'resolver', type: 'address' },
+    { name: 'backerStake', type: 'uint256' },
+    { name: 'fixture', type: 'uint256' },
+    { name: 'odds', type: 'uint256' },
+    { name: 'expiration', type: 'uint256' },
+    { name: 'nonce', type: 'uint256' },
+    { name: 'payload', type: 'bytes' }
   ];
 
-  const params = [
-    bet.backerStake,
-    bet.fixture,
-    bet.odds,
-    bet.expiration
-  ];
+  const domainData = {
+    name: 'FansUnite Protocol',
+    chainId: networkId,
+    verifyingContract: betManagerAddress
+  };
 
-  const payloadHash = Web3.utils.soliditySha3.apply(null, [ bet.payload ]);
-  const schemaHash = Web3.utils.soliditySha3.apply(null, schema);
-  const preHash = Web3.utils.soliditySha3.apply(null, [ schemaHash, ...subjects, ...params, payloadHash ]);
-  return Web3.utils.soliditySha3.apply(null, [ networkId, bet.nonce, preHash ]);
+  const message = {
+    backer: bet.backer,
+    layer: bet.layer,
+    token: bet.token,
+    league: bet.league,
+    resolver: bet.resolver,
+    backerStake: bet.backerStake.toString(),
+    fixture: bet.fixture.toString(),
+    odds: bet.odds.toString(),
+    expiration: bet.expiration.toString(),
+    nonce: bet.nonce.toString(),
+    payload: bet.payload
+  };
+
+  const data = {
+    types: {
+      EIP712Domain: eip712Domain,
+      Bet: eip712Bet
+    },
+    domain: domainData,
+    primaryType: 'Bet',
+    message
+  };
+
+  return '0x' + TypedDataUtils.sign(data).toString('hex');
 }

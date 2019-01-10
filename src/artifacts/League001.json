@@ -4,6 +4,39 @@
     {
       "constant": true,
       "inputs": [],
+      "name": "getVersion",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_participant",
+          "type": "uint256"
+        }
+      ],
+      "name": "isParticipant",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
       "name": "getName",
       "outputs": [
         {
@@ -17,12 +50,40 @@
     },
     {
       "constant": true,
-      "inputs": [],
-      "name": "getRegistryContract",
+      "inputs": [
+        {
+          "name": "_fixture",
+          "type": "uint256"
+        }
+      ],
+      "name": "getFixtureStart",
       "outputs": [
         {
           "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_fixture",
+          "type": "uint256"
+        },
+        {
+          "name": "_resolver",
           "type": "address"
+        }
+      ],
+      "name": "isFixtureResolved",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint8"
         }
       ],
       "payable": false,
@@ -58,32 +119,18 @@
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "constant": true,
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
+      "inputs": [
         {
-          "name": "",
-          "type": "address"
+          "name": "_participant",
+          "type": "uint256"
+        },
+        {
+          "name": "_fixture",
+          "type": "uint256"
         }
       ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "isOwner",
+      "name": "isParticipantScheduled",
       "outputs": [
         {
           "name": "",
@@ -93,144 +140,6 @@
       "payable": false,
       "stateMutability": "view",
       "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getDetails",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bytes"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "name": "_class",
-          "type": "string"
-        },
-        {
-          "name": "_name",
-          "type": "string"
-        },
-        {
-          "name": "_registry",
-          "type": "address"
-        },
-        {
-          "name": "_participantsPerFixture",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "_year",
-          "type": "uint16"
-        }
-      ],
-      "name": "LogSeasonAdded",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_id",
-          "type": "uint256"
-        }
-      ],
-      "name": "LogFixtureAdded",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_id",
-          "type": "uint256"
-        }
-      ],
-      "name": "LogParticipantAdded",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "_fixtureId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "_resolver",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "_payload",
-          "type": "bytes"
-        }
-      ],
-      "name": "LogFixtureResolved",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "previousOwner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnershipRenounced",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "previousOwner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnershipTransferred",
-      "type": "event"
     },
     {
       "constant": false,
@@ -255,11 +164,67 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_fixture",
+          "type": "uint256"
+        }
+      ],
+      "name": "isFixtureScheduled",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_fixture",
+          "type": "uint256"
+        },
+        {
+          "name": "_resolver",
+          "type": "address"
+        }
+      ],
+      "name": "getResolution",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getDetails",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
           "name": "_year",
-          "type": "uint16"
+          "type": "uint256"
         }
       ],
       "name": "addSeason",
@@ -273,7 +238,7 @@
       "inputs": [
         {
           "name": "_season",
-          "type": "uint16"
+          "type": "uint256"
         },
         {
           "name": "_participants",
@@ -310,55 +275,9 @@
     },
     {
       "constant": true,
-      "inputs": [
-        {
-          "name": "_fixture",
-          "type": "uint256"
-        },
-        {
-          "name": "_resolver",
-          "type": "address"
-        }
-      ],
-      "name": "getResolution",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bytes"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
       "inputs": [],
       "name": "getSeasons",
       "outputs": [
-        {
-          "name": "",
-          "type": "uint16[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_year",
-          "type": "uint16"
-        }
-      ],
-      "name": "getSeason",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint16"
-        },
         {
           "name": "",
           "type": "uint256[]"
@@ -372,15 +291,19 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_fixture",
+          "name": "_year",
           "type": "uint256"
         }
       ],
-      "name": "getFixtureStart",
+      "name": "getSeason",
       "outputs": [
         {
           "name": "",
           "type": "uint256"
+        },
+        {
+          "name": "",
+          "type": "uint256[]"
         }
       ],
       "payable": false,
@@ -449,104 +372,6 @@
         {
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_fixture",
-          "type": "uint256"
-        }
-      ],
-      "name": "isFixtureScheduled",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_fixture",
-          "type": "uint256"
-        },
-        {
-          "name": "_resolver",
-          "type": "address"
-        }
-      ],
-      "name": "isFixtureResolved",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_participant",
-          "type": "uint256"
-        }
-      ],
-      "name": "isParticipant",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_participant",
-          "type": "uint256"
-        },
-        {
-          "name": "_fixture",
-          "type": "uint256"
-        }
-      ],
-      "name": "isParticipantScheduled",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getVersion",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
         }
       ],
       "payable": false,

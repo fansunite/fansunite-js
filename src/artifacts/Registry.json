@@ -2,44 +2,6 @@
   "contractName": "Registry",
   "abi": [
     {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "name": "validAddressKeys",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "name": "storedAddresses",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "constant": false,
       "inputs": [],
       "name": "renounceOwnership",
@@ -63,10 +25,24 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "isOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
-          "name": "_newOwner",
+          "name": "newOwner",
           "type": "address"
         }
       ],
@@ -170,7 +146,7 @@
       "address": "0x871dd7c2b4b25e1aa18728e9d5f2af4c4e431f5c"
     },
     "42": {
-      "address": "0x3561d2cd67f621dc10130ffffcb9dfc1d9dd4e0a"
+      "address": "0x49af4fb42d323c5b234f31b31acca59cee1b661b"
     }
   }
 }

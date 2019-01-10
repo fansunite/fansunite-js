@@ -32,6 +32,20 @@
     {
       "constant": true,
       "inputs": [],
+      "name": "DOMAIN_SEPARATOR",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
       "name": "getRegistryContract",
       "outputs": [
         {
@@ -188,7 +202,7 @@
           "type": "bytes32"
         },
         {
-          "indexed": true,
+          "indexed": false,
           "name": "_result",
           "type": "uint256"
         }
@@ -201,11 +215,48 @@
       "inputs": [
         {
           "indexed": true,
+          "name": "_layer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_league",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_resolver",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_token",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_fixture",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_segment",
+          "type": "bytes32"
+        }
+      ],
+      "name": "LogPayoutClaimed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
           "name": "_old",
           "type": "uint256"
         },
         {
-          "indexed": true,
+          "indexed": false,
           "name": "_new",
           "type": "uint256"
         }
@@ -299,6 +350,36 @@
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_league",
+          "type": "address"
+        },
+        {
+          "name": "_resolver",
+          "type": "address"
+        },
+        {
+          "name": "_token",
+          "type": "address"
+        },
+        {
+          "name": "_fixture",
+          "type": "uint256"
+        },
+        {
+          "name": "_segment",
+          "type": "bytes32"
+        }
+      ],
+      "name": "claimPayout",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [
         {
@@ -328,25 +409,6 @@
       "payable": false,
       "stateMutability": "view",
       "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_subject",
-          "type": "address"
-        }
-      ],
-      "name": "getBetsBySubject",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bytes32[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
     }
   ],
   "networks": {
@@ -354,7 +416,7 @@
       "address": "0x6a4a62e5a7ed13c361b176a5f62c2ee620ac0df8"
     },
     "42": {
-      "address": "0xc753f4f84e765b70d582ec58f4aeeab252eef1fa"
+      "address": "0x97199e1c467f5a9d90277fa97b10e58793428c9d"
     }
   }
 }

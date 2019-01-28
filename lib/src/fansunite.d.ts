@@ -4,6 +4,7 @@ import { FanToken } from './contract-wrappers/fan-token';
 import { League001 } from './contract-wrappers/league-001';
 import { LeagueRegistry } from './contract-wrappers/league-registry';
 import { Registry } from './contract-wrappers/registry';
+import { Resolver } from './contract-wrappers/resolver';
 import { ResolverRegistry } from './contract-wrappers/resolver-registry';
 import { Vault } from './contract-wrappers/vault';
 import { Bet, NewSignedBet } from './types';
@@ -13,14 +14,15 @@ export declare class FansUnite {
     league001: League001;
     leagueRegistry: LeagueRegistry;
     registry: Registry;
+    resolver: Resolver;
     resolverRegistry: ResolverRegistry;
     vault: Vault;
     private web3;
     private networkId;
     constructor(web3: any, networkId: number);
     hashBet(bet: Bet): string;
-    typedDataSignBet(bet: Bet): Promise<string>;
-    newTypedDataSignBet(bet: Bet): Promise<NewSignedBet>;
+    typedDataSignBet(bet: Bet, v3: boolean): Promise<string>;
+    newTypedDataSignBet(bet: Bet, v3: boolean): Promise<NewSignedBet>;
     generateNonce(): BN;
     awaitTxMined(txHash: string): Promise<{}>;
 }

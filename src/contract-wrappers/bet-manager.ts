@@ -37,11 +37,6 @@ export class BetManager extends ContractWrapper {
     return instance.methods.getResult(league, resolver, fixture, payload).call();
   }
 
-  public async getBetsBySubject(subject: string) {
-    const instance = this._getBetManagerInstance();
-    return instance.methods.getBetsBySubject(subject).call();
-  }
-
   public getContractAddress() {
     return artifacts.BetManager.networks[this.networkId].address;
   }

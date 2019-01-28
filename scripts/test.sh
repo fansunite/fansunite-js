@@ -4,9 +4,7 @@ set -o errexit
 trap cleanup EXIT
 
 cleanup() {
-  if [ ! -z "$ganache_pid" ]; then
-    kill -9 $ganache_pid
-  fi
+    lsof -i tcp:8545 | awk 'NR!=1 {print $2}' | xargs kill
 }
 
 is_running() {

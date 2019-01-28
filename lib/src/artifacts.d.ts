@@ -4,6 +4,7 @@ export declare const artifacts: {
     League001: any;
     LeagueRegistry: any;
     Registry: any;
+    Resolver: any;
     ResolverRegistry: any;
     Vault: any;
 };

@@ -5,7 +5,6 @@ export declare class BetManager extends ContractWrapper {
     submitBet(newSignedBet: NewSignedBet, from: string, gas: number): Promise<any>;
     claimBet(bet: Bet, from: string, gas: number): Promise<any>;
     getResult(league: string, resolver: string, fixture: number, payload: string): Promise<any>;
-    getBetsBySubject(subject: string): Promise<any>;
     getContractAddress(): any;
     private _getBetManagerInstance;
 }

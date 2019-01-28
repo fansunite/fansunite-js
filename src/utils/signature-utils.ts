@@ -3,7 +3,8 @@ import { Bet } from '../types';
 export async function typedDataSignBet(
   web3: any,
   bet: Bet,
-  betManagerAddress: string
+  betManagerAddress: string,
+  v3: boolean
 ) : Promise<string> {
 
   const name = 'FansUnite Protocol';
@@ -48,7 +49,7 @@ export async function typedDataSignBet(
     payload: bet.payload
   };
 
-  const data = JSON.stringify({
+  let data: string | object = {
     types: {
       EIP712Domain: eip712Domain,
       Bet: eip712Bet
@@ -56,16 +57,19 @@ export async function typedDataSignBet(
     domain: domainData,
     primaryType: 'Bet',
     message
-  });
+  };
+  if(v3) {
+    data = JSON.stringify(data)
+  }
 
-  return signTypedDataV3(web3, bet, data);
+  return signTypedDataV3(web3, bet, data, v3);
 }
 
-async function signTypedDataV3(web3: any, bet, data) {
+async function signTypedDataV3(web3: any, bet, data, v3) {
   const sigResult: any = await new Promise((resolve, reject) => {
     web3.currentProvider.send(
       {
-        method: 'eth_signTypedData_v3',
+        method: v3 ? 'eth_signTypedData_v3' : 'eth_signTypedData',
         params: [bet.backer, data],
         from: bet.backer
       }, (err, result) => {

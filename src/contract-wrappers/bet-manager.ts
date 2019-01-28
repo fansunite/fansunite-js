@@ -1,3 +1,4 @@
+import BN = require('bn.js');
 import { artifacts } from '../artifacts';
 import { NewSignedBet, Bet } from '../types';
 import { ContractWrapper } from './contract-wrapper';
@@ -30,6 +31,19 @@ export class BetManager extends ContractWrapper {
         bet.payload
       )
       .send({ from, gas });
+  }
+
+  public async claimPayout(
+    league: string,
+    resolver: string,
+    token: string,
+    fixture: BN,
+    segment: string,
+    from: string,
+    gas: number
+  ) {
+    const instance = this._getBetManagerInstance();
+    return instance.methods.claimPayout(league, resolver, token, fixture, segment).send({from, gas})
   }
 
   public async getResult(league: string, resolver: string, fixture: number, payload: string) {

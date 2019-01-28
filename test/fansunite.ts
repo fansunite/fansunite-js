@@ -348,6 +348,13 @@ describe('FansUnite library', () => {
       await fansunite.betManager.claimBet(bet, backerAddress, 6000000);
       // TODO
     });
+
+    it('should claim a payout', async () => {
+      const segment = await fansunite.resolver.getSegment(unresolvedResolverAddress, leagueAddress, fixtureId, bet.payload);
+      await migration.pushResolution(1, bet.resolver, web3.eth.abi.encodeParameter('uint256', 1));
+      await fansunite.betManager.claimPayout(leagueAddress, unresolvedResolverAddress, tokenAddress, fixtureId, segment, layerAddress, 6000000);
+      // TODO
+    });
   });
 
   describe('hashBet', () => {

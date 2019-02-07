@@ -12,6 +12,7 @@ import { Bet, NewSignedBet } from './types';
 
 import { generateNonce, newSignedBet } from './utils/bet-utils';
 import { hashBet } from './utils/hash-utils';
+import { generateMoneylinePayload, generateSpreadPayload, generateTotalsPayload } from './utils/payload-generator';
 import { typedDataSignBet } from './utils/signature-utils';
 import { awaitTxMined } from './utils/tx-utils';
 
@@ -62,5 +63,17 @@ export class FansUnite {
 
   public async awaitTxMined(txHash: string) {
     return awaitTxMined(this.web3, txHash, 1000);
+  }
+
+  public generateMoneylinePayload(participantId: BN) {
+    return generateMoneylinePayload(this.web3, participantId);
+  }
+
+  public generateSpreadPayload(participantId: BN, spread: BN) {
+    return generateSpreadPayload(this.web3, participantId, spread);
+  }
+
+  public generateTotalsPayload(participantId: BN, total: BN, over: boolean) {
+    return generateTotalsPayload(this.web3, participantId, total, over);
   }
 }

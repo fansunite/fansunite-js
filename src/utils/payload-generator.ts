@@ -1,7 +1,7 @@
 import BN = require('bn.js');
 
-export function generateMoneylinePayload(web3, participantId) {
-  return web3.eth.abi.encodeParameters(['uint256'], participantId);
+export function generateMoneylinePayload(web3, participantId: BN) {
+  return web3.eth.abi.encodeParameters(['uint256'], [participantId]);
 }
 
 export function generateSpreadPayload(web3, participantId: BN, spread: BN) {

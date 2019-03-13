@@ -1,6 +1,7 @@
 import BN = require('bn.js');
 import Web3 = require('web3');
 import * as BetManager from '../../src/artifacts/BetManager.json';
+import * as FanToken from '../../src/artifacts/FanToken.json';
 import * as League001 from '../../src/artifacts/League001.json';
 import * as LeagueRegistry from '../../src/artifacts/LeagueRegistry.json';
 import * as ResolverRegistry from '../../src/artifacts/ResolverRegistry.json';
@@ -13,6 +14,7 @@ export class Migration {
   private leagueRegInstance: any;
   private leagueInstance: any;
   private vaultInstance: any;
+  private fanTokenInstance: any;
   private resolverRegistryInstance: any;
   private web3: Web3;
   private networkId: number;
@@ -57,6 +59,12 @@ export class Migration {
 
     const betManager = BetManager as any;
     this.betManagerAddress = betManager.networks[this.networkId].address;
+
+    const fanToken = FanToken as any;
+    this.fanTokenInstance = new web3.eth.Contract(
+      fanToken.abi,
+      fanToken.networks[networkId].address
+    )
   }
 
   public async runMigration(
@@ -65,7 +73,9 @@ export class Migration {
     leagueName: string,
     participants: string[],
     year: BN,
-    eventStartTime: BN
+    eventStartTime: BN,
+    backerAddress: string,
+    mintAmount: BN
   ) {
     await this.createClass(className, participantsPerFixture);
     await this.createLeague(className, leagueName);
@@ -89,6 +99,8 @@ export class Migration {
 
     await this.pushResolution(1, this.resolvedResolverAddress, this.resolutionPayload);
     await this.addSpender(this.betManagerAddress);
+
+    await this.mintTokens(backerAddress, mintAmount);
   }
 
   public getLeagueAddress(){
@@ -105,6 +117,11 @@ export class Migration {
 
   public getBetManagerAddress(){
     return this.betManagerAddress;
+  }
+
+  public getFanTokenAddress(){
+    const fanToken = FanToken as any;
+    return fanToken.networks[this.networkId].address;
   }
 
   public getResolutionPayload(){
@@ -142,9 +159,12 @@ export class Migration {
     await this.resolverRegistryInstance.methods.useResolver(this.leagueAddress, resolverAddress).send({from: this.owner, gas: this.gas});
   }
 
-
   private async addSpender(address: string) {
     await this.vaultInstance.methods.addSpender(address).send({from: this.owner});
+  }
+
+  private async mintTokens(backerAddress: string, amount: BN) {
+    await this.fanTokenInstance.methods.mint(backerAddress, amount).send({from: this.owner, gas: this.gas});
   }
 
   private async createResolver() {

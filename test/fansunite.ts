@@ -32,6 +32,8 @@ let backerAddress: string;
 let nonApprovedAddress: string;
 let pendingResolverAddress: string;
 let layerAddress: string;
+let fanTokenAddress: string;
+let mintAmount: BN;
 const tokenAddress = constants.NULL_ADDRESS; // ETH Token
 const odds = new BN(2);
 
@@ -52,20 +54,24 @@ describe('FansUnite library', () => {
     accounts = await web3.eth.getAccounts();
 
     migration = new Migration(web3, networkId, accounts);
+    backerAddress = accounts[3];
+    mintAmount = new BN(100000);
     await migration.runMigration(
       className,
       participantsPerFixture,
       leagueName,
       participants,
       year,
-      eventStartTime
+      eventStartTime,
+      backerAddress,
+      mintAmount
     );
     leagueAddress = migration.getLeagueAddress();
     moneylineResolverAddress = migration.getResolvedResolverAddress();
     resolvedResolverAddress = migration.getResolvedResolverAddress();
     unresolvedResolverAddress = migration.getUnresolvedResolverAddress();
     betManagerAddress = migration.getBetManagerAddress();
-    backerAddress = accounts[3];
+    fanTokenAddress = migration.getFanTokenAddress();
     layerAddress = accounts[4];
     nonApprovedAddress = accounts[6];
     pendingResolverAddress = accounts[6];
@@ -355,6 +361,57 @@ describe('FansUnite library', () => {
       await fansunite.betManager.claimPayout(leagueAddress, unresolvedResolverAddress, tokenAddress, fixtureId, segment, layerAddress, 6000000);
       // TODO
     });
+  });
+
+  describe('ERC20Token', () => {
+
+    it('should return the name of a token', async() => {
+      const result = await fansunite.erc20Token.name(fanTokenAddress);
+      expect(result).to.be.equal('FansUnite Token');
+    });
+
+    it('should return the symbol supply for the token', async() => {
+      const result = await fansunite.erc20Token.symbol(fanTokenAddress);
+      expect(result).to.be.equal('FAN');
+    });
+
+    it('should return the total supply for the token', async() => {
+      const result = await fansunite.erc20Token.totalSupply(fanTokenAddress);
+      expect(result.toString()).to.be.equal(mintAmount.toString());
+    });
+
+    it('should return the decimals for the token', async() => {
+      const result = await fansunite.erc20Token.decimals(fanTokenAddress);
+      expect(result.toString()).to.be.equal('18');
+    });
+
+    it('should return balance of a token holder', async() => {
+      const result = await fansunite.erc20Token.balanceOf(fanTokenAddress, backerAddress);
+      expect(result.toString()).to.be.equal(mintAmount.toString());
+    });
+
+    it('should return the spender allowance of a token holder', async() => {
+      const result = await fansunite.erc20Token.allowance(fanTokenAddress, backerAddress, layerAddress);
+      expect(result.toString()).to.be.equal('0');
+    });
+
+    it('should transfer a token to an address', async() => {
+      const transferAmount = new BN(100);
+      await fansunite.erc20Token.transfer(fanTokenAddress, layerAddress, transferAmount, backerAddress);
+      const backerBalance = await fansunite.erc20Token.balanceOf(fanTokenAddress, backerAddress);
+      expect(backerBalance.toString()).to.be.equal(mintAmount.sub(transferAmount).toString());
+      const layerBalance = await fansunite.erc20Token.balanceOf(fanTokenAddress, layerAddress);
+      expect(layerBalance.toString()).to.be.equal(transferAmount.toString());
+    });
+
+    it('should approve a spender a specific amount', async() => {
+      const allowance = new BN(100);
+      const allowanceBefore = await fansunite.erc20Token.allowance(fanTokenAddress, backerAddress, layerAddress);
+      await fansunite.erc20Token.approve(fanTokenAddress, layerAddress, allowance, backerAddress);
+      const allowanceAfter = await fansunite.erc20Token.allowance(fanTokenAddress, backerAddress, layerAddress);
+      expect(allowanceAfter.toString()).to.be.equal(allowanceBefore.add(allowance).toString());
+    });
+
   });
 
   describe('hashBet', () => {

@@ -1,5 +1,6 @@
 import BN = require('bn.js');
 import { BetManager } from './contract-wrappers/bet-manager';
+import { Erc20Token } from './contract-wrappers/erc20-token';
 import { FanToken } from './contract-wrappers/fan-token';
 import { League001 } from './contract-wrappers/league-001';
 import { LeagueRegistry } from './contract-wrappers/league-registry';
@@ -17,6 +18,7 @@ export declare class FansUnite {
     resolver: Resolver;
     resolverRegistry: ResolverRegistry;
     vault: Vault;
+    erc20Token: Erc20Token;
     private web3;
     private networkId;
     constructor(web3: any, networkId: number);

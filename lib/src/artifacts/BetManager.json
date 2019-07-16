@@ -18,20 +18,6 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "getChainId",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
       "name": "DOMAIN_SEPARATOR",
       "outputs": [
         {
@@ -83,6 +69,20 @@
     {
       "constant": true,
       "inputs": [],
+      "name": "CHAIN_ID",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
       "name": "owner",
       "outputs": [
         {
@@ -106,20 +106,6 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_chainId",
-          "type": "uint256"
-        }
-      ],
-      "name": "setChainId",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -409,6 +395,20 @@
       "payable": false,
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_chainId",
+          "type": "uint256"
+        }
+      ],
+      "name": "setChainId",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ],
   "networks": {
@@ -416,7 +416,7 @@
       "address": "0x6a4a62e5a7ed13c361b176a5f62c2ee620ac0df8"
     },
     "42": {
-      "address": "0x97199e1c467f5a9d90277fa97b10e58793428c9d"
+      "address": "0x721681118ee9df7a02bb3fbde8ca301674e226b2"
     }
   }
 }

@@ -26,7 +26,7 @@ export declare class FansUnite {
     typedDataSignBet(bet: Bet, v3: boolean): Promise<string>;
     newTypedDataSignBet(bet: Bet, v3: boolean): Promise<NewSignedBet>;
     generateNonce(): BN;
-    awaitTxMined(txHash: string): Promise<{}>;
+    awaitTxMined(txHash: string): Promise<unknown>;
     generateMoneylinePayload(participantId: BN): any;
     generateSpreadPayload(participantId: BN, spread: BN): any;
     generateTotalsPayload(participantId: BN, total: BN, over: boolean): any;

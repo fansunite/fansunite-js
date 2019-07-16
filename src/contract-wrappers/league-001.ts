@@ -62,9 +62,9 @@ export class League001 extends ContractWrapper {
   }
 
   public async getParticipants(leagueAddress: string) {
-    let participants = Array.apply(null, {length: await this.getParticipantCount(leagueAddress)}).map(Number.call, Number);
-    const participantPromises = participants.map(async(n: number) => this.getParticipant(leagueAddress, new BN(n + 1)));
-    participants = await Promise.all(participantPromises);
+    const participantIds = Array.from(Array(await this.getParticipantCount(leagueAddress)).keys());
+    const participantPromises = participantIds.map(async(n: number) => this.getParticipant(leagueAddress, new BN(n + 1)));
+    const participants = await Promise.all(participantPromises);
     return participants;
   }
 

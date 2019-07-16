@@ -16,6 +16,9 @@
     "include": [
         "./src/**/*",
         "./test/**/*",
-        "./node_modules/@types/**/*"
+        "./node_modules/@types/bn.js/*",
+        "./node_modules/@types/chai/*",
+        "./node_modules/@types/underscore/*",
+        "./node_modules/@types/mocha/*"
     ]
 }

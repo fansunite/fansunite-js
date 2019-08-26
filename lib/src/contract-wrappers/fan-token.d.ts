@@ -1,6 +1,7 @@
 import BN = require('bn.js');
 import { ContractWrapper } from './contract-wrapper';
 export declare class FanToken extends ContractWrapper {
+    private fanTokenInstance;
     constructor(web3: any, networkId: number);
     balanceOf(user: string): Promise<BN>;
     allowance(user: string, spender: string): Promise<BN>;

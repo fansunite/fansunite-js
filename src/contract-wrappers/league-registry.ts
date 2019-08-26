@@ -3,6 +3,8 @@ import { League } from '../types';
 import { ContractWrapper } from './contract-wrapper';
 
 export class LeagueRegistry extends ContractWrapper {
+  private leagueRegistryInstance;
+
   constructor(web3: any, networkId: number) {
     super(web3, networkId);
   }
@@ -48,9 +50,13 @@ export class LeagueRegistry extends ContractWrapper {
   }
 
   private _getLeagueRegistryInstance() {
-    return new this.web3.eth.Contract(
+    if(this.leagueRegistryInstance) {
+      return this.leagueRegistryInstance;
+    }
+    this.leagueRegistryInstance = new this.web3.eth.Contract(
       artifacts.LeagueRegistry.abi,
       artifacts.LeagueRegistry.networks[this.networkId].address
     );
+    return this.leagueRegistryInstance;
   }
 }

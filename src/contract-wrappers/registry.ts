@@ -2,6 +2,8 @@ import { artifacts } from '../artifacts';
 import { ContractWrapper } from './contract-wrapper';
 
 export class Registry extends ContractWrapper {
+  private registryInstance;
+
   constructor(web3: any, networkId: number) {
     super(web3, networkId);
   }
@@ -16,9 +18,13 @@ export class Registry extends ContractWrapper {
   }
 
   private _getRegistryInstance() {
-    return new this.web3.eth.Contract(
+    if(this.registryInstance) {
+      return this.registryInstance;
+    }
+    this.registryInstance = new this.web3.eth.Contract(
       artifacts.Registry.abi,
       artifacts.Registry.networks[this.networkId].address
     );
+    return this.registryInstance;
   }
 }

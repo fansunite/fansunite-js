@@ -1,6 +1,7 @@
 import BN = require('bn.js');
 import { ContractWrapper } from './contract-wrapper';
 export declare class Vault extends ContractWrapper {
+    private vaultInstance;
     constructor(web3: any, networkId: number);
     approve(spender: string, from: string): Promise<any>;
     deposit(token: string, amount: BN, from: string): Promise<any>;

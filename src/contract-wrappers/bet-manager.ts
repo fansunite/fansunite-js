@@ -1,9 +1,11 @@
 import BN = require('bn.js');
 import { artifacts } from '../artifacts';
-import { NewSignedBet, Bet } from '../types';
+import { Bet, NewSignedBet } from '../types';
 import { ContractWrapper } from './contract-wrapper';
 
 export class BetManager extends ContractWrapper {
+  private betManagerInstance;
+
   constructor(web3: any, networkId: number) {
     super(web3, networkId);
   }
@@ -56,6 +58,10 @@ export class BetManager extends ContractWrapper {
   }
 
   private _getBetManagerInstance() {
-    return new this.web3.eth.Contract(artifacts.BetManager.abi, artifacts.BetManager.networks[this.networkId].address);
+    if(this.betManagerInstance) {
+      return this.betManagerInstance;
+    }
+    this.betManagerInstance = new this.web3.eth.Contract(artifacts.BetManager.abi, artifacts.BetManager.networks[this.networkId].address);
+    return this.betManagerInstance;
   }
 }

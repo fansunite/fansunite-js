@@ -3,6 +3,8 @@ import { artifacts } from '../artifacts';
 import { ContractWrapper } from './contract-wrapper';
 
 export class FanToken extends ContractWrapper {
+  private fanTokenInstance;
+
   constructor(web3: any, networkId: number) {
     super(web3, networkId);
   }
@@ -39,9 +41,13 @@ export class FanToken extends ContractWrapper {
   }
 
   private _getFanTokenInstance() {
-    return new this.web3.eth.Contract(
+    if(this.fanTokenInstance) {
+      return this.fanTokenInstance;
+    }
+    this.fanTokenInstance = new this.web3.eth.Contract(
       artifacts.FanToken.abi,
       artifacts.FanToken.networks[this.networkId].address
     );
+    return this.fanTokenInstance;
   }
 }

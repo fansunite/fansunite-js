@@ -3,6 +3,8 @@ import { artifacts } from '../artifacts';
 import { ContractWrapper } from './contract-wrapper';
 
 export class Vault extends ContractWrapper {
+  private vaultInstance;
+
   constructor(web3: any, networkId: number) {
     super(web3, networkId);
   }
@@ -54,6 +56,10 @@ export class Vault extends ContractWrapper {
   }
 
   private _getVaultInstance() {
-    return new this.web3.eth.Contract(artifacts.Vault.abi, artifacts.Vault.networks[this.networkId].address);
+    if(this.vaultInstance) {
+      return this.vaultInstance;
+    }
+    this.vaultInstance = new this.web3.eth.Contract(artifacts.Vault.abi, artifacts.Vault.networks[this.networkId].address);
+    return this.vaultInstance;
   }
 }

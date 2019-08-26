@@ -2,6 +2,8 @@ import { artifacts } from '../artifacts';
 import { ContractWrapper } from './contract-wrapper';
 
 export class ResolverRegistry extends ContractWrapper {
+  private resolverRegistryInstance;
+
   constructor(web3: any, networkId: number) {
     super(web3, networkId);
   }
@@ -32,7 +34,11 @@ export class ResolverRegistry extends ContractWrapper {
   }
 
   private _getResolverRegistryInstance() {
-    return new this.web3.eth.Contract(artifacts.ResolverRegistry.abi, artifacts.ResolverRegistry.networks[this.networkId].address);
+    if(this.resolverRegistryInstance){
+      return this.resolverRegistryInstance;
+    }
+    this.resolverRegistryInstance = new this.web3.eth.Contract(artifacts.ResolverRegistry.abi, artifacts.ResolverRegistry.networks[this.networkId].address);
+    return this.resolverRegistryInstance;
   }
 
 }

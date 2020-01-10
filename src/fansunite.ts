@@ -18,6 +18,18 @@ import { typedDataSignBet } from './utils/signature-utils';
 import { awaitTxMined } from './utils/tx-utils';
 
 export class FansUnite {
+  public static generateMoneylinePayload(participantId: BN) {
+    return generateMoneylinePayload(participantId);
+  }
+
+  public static generateSpreadPayload(participantId: BN, spread: BN) {
+    return generateSpreadPayload(participantId, spread);
+  }
+
+  public static generateTotalsPayload(participantId: BN, total: BN, over: boolean) {
+    return generateTotalsPayload(participantId, total, over);
+  }
+
   public betManager: BetManager;
   public fanToken: FanToken;
   public league001: League001;
@@ -30,6 +42,7 @@ export class FansUnite {
 
   private web3: any;
   private networkId: number;
+
 
   constructor(web3: any, networkId: number) {
     this.web3 = web3;
@@ -66,17 +79,5 @@ export class FansUnite {
 
   public async awaitTxMined(txHash: string) {
     return awaitTxMined(this.web3, txHash, 1000);
-  }
-
-  public generateMoneylinePayload(participantId: BN) {
-    return generateMoneylinePayload(participantId);
-  }
-
-  public generateSpreadPayload(participantId: BN, spread: BN) {
-    return generateSpreadPayload(participantId, spread);
-  }
-
-  public generateTotalsPayload(participantId: BN, total: BN, over: boolean) {
-    return generateTotalsPayload(participantId, total, over);
   }
 }

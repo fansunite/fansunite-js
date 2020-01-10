@@ -1,4 +1,4 @@
 import BN = require('bn.js');
-export declare function generateMoneylinePayload(web3: any, participantId: BN): any;
-export declare function generateSpreadPayload(web3: any, participantId: BN, spread: BN): any;
-export declare function generateTotalsPayload(web3: any, participantId: BN, total: BN, over: boolean): any;
+export declare function generateMoneylinePayload(participantId: BN): any;
+export declare function generateSpreadPayload(participantId: BN, spread: BN): any;
+export declare function generateTotalsPayload(participantId: BN, total: BN, over: boolean): any;

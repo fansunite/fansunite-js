@@ -10,6 +10,9 @@ import { ResolverRegistry } from './contract-wrappers/resolver-registry';
 import { Vault } from './contract-wrappers/vault';
 import { Bet, NewSignedBet } from './types';
 export declare class FansUnite {
+    static generateMoneylinePayload(participantId: BN): any;
+    static generateSpreadPayload(participantId: BN, spread: BN): any;
+    static generateTotalsPayload(participantId: BN, total: BN, over: boolean): any;
     betManager: BetManager;
     fanToken: FanToken;
     league001: League001;
@@ -27,7 +30,4 @@ export declare class FansUnite {
     newTypedDataSignBet(bet: Bet, v3: boolean): Promise<NewSignedBet>;
     generateNonce(): BN;
     awaitTxMined(txHash: string): Promise<unknown>;
-    generateMoneylinePayload(participantId: BN): any;
-    generateSpreadPayload(participantId: BN, spread: BN): any;
-    generateTotalsPayload(participantId: BN, total: BN, over: boolean): any;
 }

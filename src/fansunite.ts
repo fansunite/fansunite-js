@@ -69,14 +69,14 @@ export class FansUnite {
   }
 
   public generateMoneylinePayload(participantId: BN) {
-    return generateMoneylinePayload(this.web3, participantId);
+    return generateMoneylinePayload(participantId);
   }
 
   public generateSpreadPayload(participantId: BN, spread: BN) {
-    return generateSpreadPayload(this.web3, participantId, spread);
+    return generateSpreadPayload(participantId, spread);
   }
 
   public generateTotalsPayload(participantId: BN, total: BN, over: boolean) {
-    return generateTotalsPayload(this.web3, participantId, total, over);
+    return generateTotalsPayload(participantId, total, over);
   }
 }

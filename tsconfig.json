@@ -11,7 +11,8 @@
         "noImplicitReturns": true,
         "pretty": true,
         "strict": true,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "esModuleInterop": true,
     },
     "include": [
         "./src/**/*",
